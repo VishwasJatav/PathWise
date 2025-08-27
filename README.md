@@ -23,11 +23,6 @@ From exploring career opportunities to practicing interviews and building stando
 
 ## 🚀 Getting Started  
 
-### Prerequisites  
-- Node.js & npm installed  
-
-### Installation  
-```bash
 # Clone the repo
 git clone https://github.com/your-username/pathwise.git  
 
@@ -37,30 +32,35 @@ cd pathwise
 # Install dependencies
 npm install  
 
+# --- Extra installations ---
+
+# Prisma ORM
+npm install @prisma/client
+npm install -D prisma
+
+# Clerk Authentication
+npm install @clerk/nextjs
+
+# Inngest (event-driven workflows for Next.js)
+npm install inngest
+
+# Neon (Postgres DB, works with Prisma)
+# nothing to install, just configure your Neon Postgres connection string in .env
+# Example:
+# DATABASE_URL="postgresql://user:password@ep-xxx.neon.tech/neondb"
+
+# Shadcn/UI (install CLI and setup)
+npx shadcn-ui@latest init
+
+# html2pdf.js (for generating PDFs from HTML)
+npm install html2pdf.js
+
+# Markdown support
+npm install react-markdown remark remark-gfm
+
 # Start the development server
 npm run dev
 
-
-
-
-
-
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
