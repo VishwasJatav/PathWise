@@ -17,12 +17,13 @@ import QuizResult from "./quiz-result";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 import { motion } from "framer-motion";
-import { CheckCircle, XCircle, BookOpen } from "lucide-react";
+import { CheckCircle, XCircle, BookOpen, Timer, Trophy } from "lucide-react";
 
 export default function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   const {
     loading: generatingQuiz,
@@ -40,6 +41,30 @@ export default function Quiz() {
   useEffect(() => {
     if (quizData) setAnswers(new Array(quizData.length).fill(null));
   }, [quizData]);
+
+  // Timer reset per question
+  useEffect(() => {
+    setTimeLeft(60);
+  }, [currentQuestion]);
+
+  // Timer countdown logic
+  useEffect(() => {
+    if (showExplanation || !quizData || generatingQuiz || savingResult || resultData) return;
+
+    if (timeLeft <= 0) {
+      if (!answers[currentQuestion]) {
+        // Auto-fail the question if no answer selected
+        const newAnswers = [...answers];
+        newAnswers[currentQuestion] = "Time Expired";
+        setAnswers(newAnswers);
+      }
+      setShowExplanation(true);
+      return;
+    }
+
+    const timerObj = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    return () => clearInterval(timerObj);
+  }, [timeLeft, showExplanation, quizData, currentQuestion, generatingQuiz, savingResult, resultData, answers]);
 
   const handleAnswer = (answer) => {
     const newAnswers = [...answers];
@@ -131,13 +156,20 @@ export default function Quiz() {
       className="mx-2"
     >
       <Card className="shadow-lg border-gray-700">
-        <CardHeader className="flex justify-between items-center">
-          <CardTitle className="text-white">
-            Question {currentQuestion + 1} of {quizData.length}
-          </CardTitle>
-          <span className="text-gray-400">
-            {currentQuestion + 1}/{quizData.length}
-          </span>
+        <CardHeader className="flex flex-row justify-between items-center pb-2">
+          <div>
+            <CardTitle className="text-white text-xl">
+              Question {currentQuestion + 1} <span className="text-gray-400 text-base font-normal">of {quizData.length}</span>
+            </CardTitle>
+            <p className="text-xs text-indigo-400 mt-1 flex items-center gap-1">
+              <Trophy className="w-3 h-3" /> Adaptive Difficulty
+            </p>
+          </div>
+          <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${timeLeft <= 10 ? 'bg-red-500/10 text-red-400 border-red-500/20 animate-pulse' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+            }`}>
+            <Timer className="w-4 h-4" />
+            <span className="font-mono font-bold">{timeLeft}s</span>
+          </div>
         </CardHeader>
 
         <CardContent className="space-y-4">

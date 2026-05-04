@@ -14,7 +14,7 @@ model User {
   email         String    @unique
   name          String?
   imageUrl      String?
-  industry      String?    // Combined industry-subindustry (e.g., "tech-software-development")
+  industry      String?   // Combined industry-subindustry (e.g., "tech-software-development")
   industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -93,6 +93,10 @@ model IndustryInsight {
   // Learning suggestions
   recommendedSkills String[]  // Skills recommended for the industry
   
+  // Futuristic Forecast
+  nextDecadeOutlook    String?
+  emergingTechnologies String[]
+
   lastUpdated   DateTime  @default(now())
   nextUpdate    DateTime  // Scheduled update time
 

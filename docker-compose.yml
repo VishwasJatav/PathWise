@@ -1,0 +1,67 @@
+services:
+  # ── Next.js Application ──────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://pathwise:pathwise_secret@db:5432/pathwise?schema=public
+      - OLLAMA_URL=http://ollama:11434
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ollama:
+        condition: service_started
+    restart: unless-stopped
+
+  # ── PostgreSQL (local development) ───────────────────────
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pathwise
+      POSTGRES_PASSWORD: pathwise_secret
+      POSTGRES_DB: pathwise
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U pathwise" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Redis (Caching) ──────────────────────────────────────
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Ollama (Local AI Fallback) ───────────────────────────
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # Overriding entrypoint to pull llama3 in background before starting server
+    entrypoint: /bin/sh -c "ollama serve & sleep 5 && ollama pull llama3 && wait"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  ollama_data:

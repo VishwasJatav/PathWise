@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
+import HeaderUserSync from "@/components/header-user-sync";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "sonner";
@@ -20,7 +21,7 @@ export default function RootLayout({ children }) {
     }}>
 
       <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.className}`}>
+        <body className={`${inter.className}`} suppressHydrationWarning>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
             disableTransitionOnChange
           >
             {/*header*/}
+            <HeaderUserSync />
             <Header />
             <main className="min-h-screen">{children}</main>
             <Toaster richColors />

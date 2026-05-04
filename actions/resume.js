@@ -2,13 +2,29 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateAIResponse } from "@/lib/ai/provider";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const saveResumeSchema = z.object({
+  content: z.string().min(1, "Resume content is required"),
+});
+
+const improveWithAISchema = z.object({
+  current: z.string().min(1, "Current content is required"),
+  type: z.string().min(1, "Optimization type is required"),
+});
+
+const getAtsScoreSchema = z.object({
+  content: z.string().min(1, "Resume content is required"),
+  jobDescription: z.string().optional(),
+});
 
 export async function saveResume(content) {
+  // If content is an object, stringify it
+  const stringContent = typeof content === "object" ? JSON.stringify(content) : content;
+
+  const validated = saveResumeSchema.parse({ content: stringContent });
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -24,11 +40,11 @@ export async function saveResume(content) {
         userId: user.id,
       },
       update: {
-        content,
+        content: validated.content,
       },
       create: {
         userId: user.id,
-        content,
+        content: validated.content,
       },
     });
 
@@ -58,6 +74,7 @@ export async function getResume() {
 }
 
 export async function improveWithAI({ current, type }) {
+  const validated = improveWithAISchema.parse({ current, type });
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -71,9 +88,9 @@ export async function improveWithAI({ current, type }) {
   if (!user) throw new Error("User not found");
 
   const prompt = `
-    As an expert resume writer, improve the following ${type} description for a ${user.industry} professional.
+    As an expert resume writer, improve the following ${validated.type} description for a ${user.industry} professional.
     Make it more impactful, quantifiable, and aligned with industry standards.
-    Current content: "${current}"
+    Current content: "${validated.current}"
 
     Requirements:
     1. Use action verbs
@@ -87,12 +104,43 @@ export async function improveWithAI({ current, type }) {
   `;
 
   try {
-    const result = await model.generateContent(prompt);
+    const result = await generateAIResponse(prompt);
     const response = result.response;
     const improvedContent = response.text().trim();
     return improvedContent;
   } catch (error) {
     console.error("Error improving content:", error);
     throw new Error("Failed to improve content");
+  }
+}
+
+export async function getAtsScore({ content, jobDescription }) {
+  const validated = getAtsScoreSchema.parse({ content, jobDescription });
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const prompt = `
+    Analyze this resume for ATS (Applicant Tracking System) compatibility${validated.jobDescription ? ` against this job description:\n${validated.jobDescription}` : ""
+    }.
+    
+    Resume Content:
+    ${validated.content}
+    
+    Provide ONLY a JSON response in this exact format:
+    {
+      "score": 85,
+      "feedback": "string explaining strengths and weaknesses (max 3 sentences)",
+      "missingKeywords": ["keyword1", "keyword2"]
+    }
+  `;
+
+  try {
+    const result = await generateAIResponse(prompt);
+    const text = await result.response.text();
+    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
+    return JSON.parse(cleanedText);
+  } catch (error) {
+    console.error("Error analyzing ATS score:", error);
+    throw new Error("Failed to calculate ATS score");
   }
 }

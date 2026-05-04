@@ -10,13 +10,13 @@ import { motion } from "framer-motion";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const DashboardView = ({ insights }) => {
-  const salaryData = insights.salaryRanges.map((range) => ({
+  // ✅ Prevent crash if insights or salaryRanges is missing
+  const salaryData = insights?.salaryRanges?.map((range) => ({
     name: range.role,
     min: range.min / 1000,
-    median: range.median / 1000,
     max: range.max / 1000,
-  }));
-
+    median: range.median / 1000,
+  })) || []; // fallback empty array
   const getDemandLevelColor = (level) => {
     switch (level.toLowerCase()) {
       case "high":
@@ -188,9 +188,9 @@ const DashboardView = ({ insights }) => {
                       return null;
                     }}
                   />
-                 <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
-                <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
-                <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
+                  <Bar dataKey="min" fill="#6366f1" radius={[4, 4, 0, 0]} name="Min Salary (K)" />
+                  <Bar dataKey="median" fill="#a855f7" radius={[4, 4, 0, 0]} name="Median Salary (K)" />
+                  <Bar dataKey="max" fill="#ec4899" radius={[4, 4, 0, 0]} name="Max Salary (K)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -246,6 +246,59 @@ const DashboardView = ({ insights }) => {
                     {skill}
                   </Badge>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Futuristic Insights */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        {/* Next Decade Outlook */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          <Card className="h-full">
+            <CardHeader className="flex items-center space-x-2 pb-2">
+              <TrendingUp className="h-5 w-5 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">10-Year Industry Outlook</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {insights.nextDecadeOutlook || "Data not available yet. Please refresh your insights."}
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Emerging Technologies */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+        >
+          <Card className="h-full">
+            <CardHeader className="flex items-center space-x-2 pb-2">
+              <Brain className="h-5 w-5 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Emerging Technologies</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {insights.emergingTechnologies?.length > 0 ? (
+                  insights.emergingTechnologies.map((tech, index) => (
+                    <Badge
+                      key={index}
+                      variant="outline"
+                      className="px-3 py-1 text-xs rounded-full border-indigo-500/30 text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 transition-all"
+                    >
+                      {tech}
+                    </Badge>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">Data not available yet.</p>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { getAssessments } from "@/actions/interview";
 import {
   Card,
   CardContent,
@@ -19,9 +21,26 @@ import {
 } from "@/components/ui/dialog";
 import QuizResult from "./quiz-result";
 
-export default function QuizList({ assessments }) {
+export default function QuizList({ initialAssessments = [], initialNextCursor = null }) {
   const router = useRouter();
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [assessments, setAssessments] = useState(initialAssessments);
+  const [nextCursor, setNextCursor] = useState(initialNextCursor);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const loadMore = async () => {
+    if (!nextCursor) return;
+    setIsLoading(true);
+    try {
+      const result = await getAssessments(nextCursor, 5);
+      setAssessments((prev) => [...prev, ...result.assessments]);
+      setNextCursor(result.nextCursor);
+    } catch (error) {
+      console.error("Failed to load more assessments", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -73,6 +92,15 @@ export default function QuizList({ assessments }) {
               </Card>
             ))}
           </div>
+
+          {nextCursor && (
+            <div className="flex justify-center mt-6 pt-4 border-t">
+              <Button onClick={loadMore} disabled={isLoading} variant="outline" className="w-full sm:w-auto">
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                Load More Quizzes
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 

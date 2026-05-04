@@ -1,5 +1,5 @@
 import React from 'react'
  const MainLayout = ({children}) => {
-  return<div className="container mx-auto mt-24 mb-20">{children}</div>
+  return <div className="min-h-screen pt-16 page-transition">{children}</div>
 };
 export default MainLayout;

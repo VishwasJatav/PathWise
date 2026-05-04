@@ -1,6 +1,8 @@
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+"use client";
+
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIcon } from "lucide-react";
 import {
@@ -9,36 +11,46 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { checkUser } from "@/lib/checkUser";
 
-const Header =async() => {
-    await checkUser();
+const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 w-full border-b bg-[hsl(var(--background)/0.8)] backdrop-blur-md z-50 supports-[backdrop-filter]:bg-[hsl(var(--background)/0.6)]">
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-border/60 bg-background/80 backdrop-blur-md shadow-lg shadow-black/10"
+          : "bg-transparent"
+      }`}
+    >
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/">
-          <h1 className="text-3xl font-extrabold italic tracking-wide">
-            <span className="text-[hsl(var(--foreground))]">PATH</span>
+        <Link href="/" className="group">
+          <h1 className="text-3xl font-extrabold italic tracking-wide transition-transform group-hover:scale-105">
+            <span className="text-foreground">PATH</span>
             <span className="text-sky-500">WISE</span>
           </h1>
         </Link>
 
         {/* Right side buttons */}
-             <div className="flex items-center space-x-2 md:space-x-4">
+        <div className="flex items-center space-x-2 md:space-x-4">
           <SignedIn>
-            <Link href="/dashboard">
-              <Button
-                variant="outline"
-                className="hidden md:inline-flex items-center gap-2"
-              >
+            <Button
+              asChild
+              variant="outline"
+              className="items-center gap-2"
+            >
+              <Link href="/dashboard">
                 <LayoutDashboard className="h-4 w-4" />
-                Industry Insights
-              </Button>
-              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
-                <LayoutDashboard className="h-4 w-4" />
-              </Button>
-            </Link>
+                <span className="hidden md:block">Industry Insights</span>
+              </Link>
+            </Button>
 
             {/* Growth Tools Dropdown */}
             <DropdownMenu>
@@ -90,12 +102,10 @@ const Header =async() => {
                   userPreviewMainIdentifier: "font-semibold",
                 },
               }}
-              afterSignOutUrl="/"
             />
           </SignedIn>
         </div>
       </nav>
-      
     </header>
   );
 };

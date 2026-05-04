@@ -2,30 +2,62 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateAIResponse, generateAIJSON } from "@/lib/ai/provider";
+import { z } from "zod";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const saveQuizResultSchema = z.object({
+  questions: z.array(z.object({
+    question: z.string(),
+    options: z.array(z.string()),
+    correctAnswer: z.string(),
+    explanation: z.string().optional()
+  })),
+  answers: z.array(z.string()),
+  score: z.number()
+});
 
-/** Generate 10 technical interview questions for the authenticated user */
+/** Generate 10 technical interview questions for the authenticated user based on skills and past mistakes */
 export async function generateQuiz() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
-    select: { industry: true, skills: true },
+    select: { id: true, industry: true, skills: true },
   });
   if (!user) throw new Error("User not found");
 
+  // Fetch past 3 assessments to identify weaknesses
+  const recentAssessments = await db.assessment.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  });
+
+  let weaknesses = [];
+  if (recentAssessments.length > 0) {
+    const wrongQuestions = recentAssessments.flatMap((a) =>
+      a.questions.filter((q) => !q.isCorrect)
+    );
+    if (wrongQuestions.length > 0) {
+      weaknesses = wrongQuestions.slice(0, 3).map((q) => q.question);
+    }
+  }
+
   const prompt = `
-    Generate 10 technical interview questions for a ${user.industry} professional${
-      user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
+    Generate 10 technical interview questions for a ${user.industry} professional${user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
     }.
+    
+    ${weaknesses.length > 0
+      ? `The user previously struggled with these topics/questions:\n${weaknesses.join(
+        "\n"
+      )}\nPlease include 3-4 questions that test these specific areas to help them improve, while keeping the rest a mix of new topics.`
+      : ""
+    }
     
     Each question should be multiple choice with 4 options.
     
-    Return the response in this JSON format only:
+    Return the response in this exact JSON format only:
     {
       "questions": [
         {
@@ -39,11 +71,7 @@ export async function generateQuiz() {
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const text = await result.response.text();
-    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-    const quiz = JSON.parse(cleanedText);
-
+    const quiz = await generateAIJSON(prompt);
     return quiz.questions;
   } catch (error) {
     console.error("Error generating quiz:", error);
@@ -53,17 +81,18 @@ export async function generateQuiz() {
 
 /** Save quiz results and generate improvement tip if necessary */
 export async function saveQuizResult(questions, answers, score) {
+  const validated = saveQuizResultSchema.parse({ questions, answers, score });
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
   const user = await db.user.findUnique({ where: { clerkUserId: userId } });
   if (!user) throw new Error("User not found");
 
-  const questionResults = questions.map((q, i) => ({
+  const questionResults = validated.questions.map((q, i) => ({
     question: q.question,
     answer: q.correctAnswer,
-    userAnswer: answers[i],
-    isCorrect: q.correctAnswer === answers[i],
+    userAnswer: validated.answers[i],
+    isCorrect: q.correctAnswer === validated.answers[i],
     explanation: q.explanation,
   }));
 
@@ -90,7 +119,7 @@ export async function saveQuizResult(questions, answers, score) {
     `;
 
     try {
-      const tipResult = await model.generateContent(improvementPrompt);
+      const tipResult = await generateAIResponse(improvementPrompt);
       improvementTip = tipResult.response.text().trim();
     } catch (error) {
       console.error("Error generating improvement tip:", error);
@@ -101,7 +130,7 @@ export async function saveQuizResult(questions, answers, score) {
     const assessment = await db.assessment.create({
       data: {
         userId: user.id,
-        quizScore: score,
+        quizScore: validated.score,
         questions: questionResults,
         category: "Technical",
         improvementTip,
@@ -116,7 +145,7 @@ export async function saveQuizResult(questions, answers, score) {
 }
 
 /** Fetch all assessments for the authenticated user */
-export async function getAssessments() {
+export async function getAssessments(cursorId = null, limit = 5) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -124,12 +153,26 @@ export async function getAssessments() {
   if (!user) throw new Error("User not found");
 
   try {
-    const assessments = await db.assessment.findMany({
+    const query = {
       where: { userId: user.id },
-      orderBy: { createdAt: "asc" },
-    });
+      orderBy: { createdAt: "desc" }, // Newest first
+      take: limit + 1,
+    };
 
-    return assessments;
+    if (cursorId) {
+      query.cursor = { id: cursorId };
+      query.skip = 1; // Skip the cursor itself
+    }
+
+    const assessments = await db.assessment.findMany(query);
+
+    let nextCursor = null;
+    if (assessments.length > limit) {
+      const nextItem = assessments.pop(); // Remove the extra item
+      nextCursor = nextItem.id;
+    }
+
+    return { assessments, nextCursor };
   } catch (error) {
     console.error("Error fetching assessments:", error);
     throw new Error("Failed to fetch assessments");

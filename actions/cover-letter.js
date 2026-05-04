@@ -2,12 +2,17 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateAIResponse } from "@/lib/ai/provider";
+import { z } from "zod";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const generateCoverLetterSchema = z.object({
+  companyName: z.string().min(1, "Company name is required"),
+  jobTitle: z.string().min(1, "Job title is required"),
+  jobDescription: z.string().min(1, "Job description is required"),
+});
 
 export async function generateCoverLetter(data) {
+  const validated = generateCoverLetterSchema.parse(data);
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -18,9 +23,8 @@ export async function generateCoverLetter(data) {
   if (!user) throw new Error("User not found");
 
   const prompt = `
-    Write a professional cover letter for a ${data.jobTitle} position at ${
-    data.companyName
-  }.
+    Write a professional cover letter for a ${validated.jobTitle} position at ${validated.companyName
+    }.
     
     About the candidate:
     - Industry: ${user.industry}
@@ -29,7 +33,7 @@ export async function generateCoverLetter(data) {
     - Professional Background: ${user.bio}
     
     Job Description:
-    ${data.jobDescription}
+    ${validated.jobDescription}
     
     Requirements:
     1. Use a professional, enthusiastic tone
@@ -44,15 +48,15 @@ export async function generateCoverLetter(data) {
   `;
 
   try {
-    const result = await model.generateContent(prompt);
+    const result = await generateAIResponse(prompt);
     const content = result.response.text().trim();
 
     const coverLetter = await db.coverLetter.create({
       data: {
         content,
-        jobDescription: data.jobDescription,
-        companyName: data.companyName,
-        jobTitle: data.jobTitle,
+        jobDescription: validated.jobDescription,
+        companyName: validated.companyName,
+        jobTitle: validated.jobTitle,
         status: "completed",
         userId: user.id,
       },

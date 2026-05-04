@@ -8,28 +8,25 @@ export const onboardingSchema = z.object({
     required_error: "Please select a specialization",
   }),
   bio: z.string().max(500).optional(),
-  experience: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .pipe(
-      z
-        .number()
-        .min(0, "Experience must be at least 0 years")
-        .max(50, "Experience cannot exceed 50 years")
-    ),
+  experience: z.coerce
+    .number()
+    .min(0, "Experience must be at least 0 years")
+    .max(50, "Experience cannot exceed 50 years"),
   skills: z.string().transform((val) =>
     val
       ? val
-          .split(",")
-          .map((skill) => skill.trim())
-          .filter(Boolean)
+        .split(",")
+        .map((skill) => skill.trim())
+        .filter(Boolean)
       : undefined
   ),
 });
 
 export const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
   mobile: z.string().optional(),
+  location: z.string().optional(),
   linkedin: z.string().optional(),
   twitter: z.string().optional(),
 });
