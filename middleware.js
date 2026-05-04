@@ -17,6 +17,17 @@ export default clerkMiddleware(async (auth, req) => {
     return redirectToSignIn({ returnBackUrl: req.url });
   }
 
+  // If user is signed in, handle redirects for landing page and auth pages
+  if (userId) {
+    const url = new URL(req.url);
+    if (url.pathname === "/" || url.pathname === "/sign-in" || url.pathname === "/sign-up") {
+      // In a real app, you might want to fetch onboarding status here, 
+      // but to avoid a DB call on every '/' hit, we just go to /dashboard 
+      // and let the dashboard layout or page handle the onboarding check.
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+  }
+
   return NextResponse.next();
 });
 
