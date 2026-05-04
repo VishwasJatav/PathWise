@@ -52,19 +52,19 @@ export async function saveResume(content) {
     return resume;
   } catch (error) {
     console.error("Error saving resume:", error);
-    throw new Error("Failed to save resume");
+    return { error: "Failed to save resume" };
   }
 }
 
 export async function getResume() {
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) return null;
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) return null;
 
   return await db.resume.findUnique({
     where: {
@@ -76,7 +76,7 @@ export async function getResume() {
 export async function improveWithAI({ current, type }) {
   const validated = improveWithAISchema.parse({ current, type });
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) return { error: "Unauthorized" };
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
@@ -85,7 +85,7 @@ export async function improveWithAI({ current, type }) {
     },
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) return { error: "User not found" };
 
   const prompt = `
     As an expert resume writer, improve the following ${validated.type} description for a ${user.industry} professional.
@@ -109,15 +109,15 @@ export async function improveWithAI({ current, type }) {
     const improvedContent = response.text().trim();
     return improvedContent;
   } catch (error) {
-    console.error("Error improving content:", error);
-    throw new Error("Failed to improve content");
+    console.error("Error improving content:", error.message);
+    return { error: "Failed to improve content. Please check your AI API key configuration." };
   }
 }
 
 export async function getAtsScore({ content, jobDescription }) {
   const validated = getAtsScoreSchema.parse({ content, jobDescription });
   const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) return { error: "Unauthorized" };
 
   const prompt = `
     Analyze this resume for ATS (Applicant Tracking System) compatibility${validated.jobDescription ? ` against this job description:\n${validated.jobDescription}` : ""
@@ -135,12 +135,16 @@ export async function getAtsScore({ content, jobDescription }) {
   `;
 
   try {
-    const result = await generateAIResponse(prompt);
-    const text = await result.response.text();
-    const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-    return JSON.parse(cleanedText);
+    const parsed = await generateAIJSON(prompt);
+
+    // Normalize casing so UI never breaks
+    return {
+      ...parsed,
+      demandLevel: parsed.demandLevel?.toUpperCase() || "MEDIUM",
+      marketOutlook: parsed.marketOutlook?.toUpperCase() || "NEUTRAL",
+    };
   } catch (error) {
-    console.error("Error analyzing ATS score:", error);
-    throw new Error("Failed to calculate ATS score");
+    console.error("Failed to parse AI insights:", error.message);
+    return { error: "AI response parsing failed. Please try again later." };
   }
 }

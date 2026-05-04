@@ -72,10 +72,11 @@ export async function generateQuiz() {
 
   try {
     const quiz = await generateAIJSON(prompt);
+    if (!quiz || !quiz.questions) throw new Error("Invalid response format from AI");
     return quiz.questions;
   } catch (error) {
-    console.error("Error generating quiz:", error);
-    throw new Error("Failed to generate quiz questions");
+    console.error("Error generating quiz:", error.message);
+    return { error: "Failed to generate quiz questions. AI service may be unavailable." };
   }
 }
 

@@ -65,7 +65,7 @@ export async function generateCoverLetter(data) {
     return coverLetter;
   } catch (error) {
     console.error("Error generating cover letter:", error.message);
-    throw new Error("Failed to generate cover letter");
+    return { error: "Failed to generate cover letter. Please check your AI settings." };
   }
 }
 

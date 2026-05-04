@@ -43,8 +43,8 @@ export const generateAIInsights = async (industry) => {
       marketOutlook: parsed.marketOutlook?.toUpperCase() || "NEUTRAL",
     };
   } catch (error) {
-    console.error("Failed to parse AI insights:", error);
-    throw new Error("AI response parsing failed after retries.");
+    console.error("Failed to parse AI insights:", error.message);
+    return { error: "AI response parsing failed. Please try again later." };
   }
 };
 
