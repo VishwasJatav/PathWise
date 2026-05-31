@@ -20,7 +20,7 @@ import { generateCoverLetter } from "@/actions/cover-letter";
 import useFetch from "@/hooks/use-fetch";
 import { coverLetterSchema } from "@/app/lib/schema";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 export default function CoverLetterGenerator() {
   const router = useRouter();
@@ -59,25 +59,26 @@ export default function CoverLetterGenerator() {
 
   return (
     <AnimatePresence>
-      <motion.div
+      <m.div
         key="cover-letter-generator"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.4 }}
-        className="space-y-6"
+        className="gap-y-"
       >
-        <Card as={motion.div} whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
-          <CardHeader>
-            <CardTitle>Job Details</CardTitle>
-            <CardDescription>
-              Provide information about the position you're applying for
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <m.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
+          <Card>
+            <CardHeader>
+              <CardTitle>Job Details</CardTitle>
+              <CardDescription>
+                Provide information about the position you're applying for
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="gap-y-">
               <div className="grid grid-cols-2 gap-4">
-                <motion.div whileFocus={{ scale: 1.02 }} className="space-y-2">
+                <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
                   <Label htmlFor="companyName">Company Name</Label>
                   <Input
                     id="companyName"
@@ -89,9 +90,9 @@ export default function CoverLetterGenerator() {
                       {errors.companyName.message}
                     </p>
                   )}
-                </motion.div>
+                </m.div>
 
-                <motion.div whileFocus={{ scale: 1.02 }} className="space-y-2">
+                <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
                   <Label htmlFor="jobTitle">Job Title</Label>
                   <Input
                     id="jobTitle"
@@ -103,10 +104,10 @@ export default function CoverLetterGenerator() {
                       {errors.jobTitle.message}
                     </p>
                   )}
-                </motion.div>
+                </m.div>
               </div>
 
-              <motion.div whileFocus={{ scale: 1.02 }} className="space-y-2">
+              <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
                 <Label htmlFor="jobDescription">Job Description</Label>
                 <Textarea
                   id="jobDescription"
@@ -119,30 +120,34 @@ export default function CoverLetterGenerator() {
                     {errors.jobDescription.message}
                   </p>
                 )}
-              </motion.div>
+              </m.div>
 
               <div className="flex justify-end">
                 <Button
                   type="submit"
                   disabled={generating}
-                  as={motion.button}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  asChild
                 >
-                  {generating ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Generating...
-                    </>
-                  ) : (
-                    "Generate Cover Letter"
-                  )}
+                  <m.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    {generating ? (
+                      <>
+                        <Loader2 className="mr-2 size- animate-spin" />
+                        Generating…
+                      </>
+                    ) : (
+                      "Generate Cover Letter"
+                    )}
+                  </m.button>
                 </Button>
               </div>
             </form>
           </CardContent>
         </Card>
-      </motion.div>
+        </m.div>
+      </m.div>
     </AnimatePresence>
   );
 }

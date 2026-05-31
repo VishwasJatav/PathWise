@@ -48,7 +48,7 @@ export async function generateCoverLetter(data) {
   `;
 
   try {
-    const result = await generateAIResponse(prompt);
+    const result = await generateAIResponse(prompt, { userId: user.id, feature: "cover-letter" });
     const content = result.response.text().trim();
 
     const coverLetter = await db.coverLetter.create({

@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { generateAIInsights } from "./dashboard";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const updateUserSchema = z.object({
   industry: z.string({ required_error: "Industry is required" }),
@@ -16,6 +17,8 @@ export async function updateUser(data) {
   const validatedData = updateUserSchema.parse(data);
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
+
+  logger.info("Updating user profile and industry", { userId, industry: validatedData.industry });
 
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
@@ -31,7 +34,7 @@ export async function updateUser(data) {
 
     // If no existing insight, generate it OUTSIDE the transaction
     if (!industryInsight) {
-      const insights = await generateAIInsights(validatedData.industry);
+      const insights = await generateAIInsights(validatedData.industry, user.id);
 
       // We can create it right away too, outside the main transaction, 
       // or inside. Creating it outside ensures the main transaction is just the user update.
@@ -61,9 +64,10 @@ export async function updateUser(data) {
       { timeout: 10000 }
     );
 
+    logger.info("Successfully updated user profile", { userId, id: user.id });
     return { success: true, ...result };
   } catch (error) {
-    console.error("Error updating user and industry:", error.message);
+    logger.error("Error updating user and industry", error);
     return { success: false, error: `Failed to update profile: ${error.message}` };
   }
 }
@@ -71,6 +75,7 @@ export async function updateUser(data) {
 export async function getUserOnboardingStatus() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
+  logger.debug("Fetching user onboarding status", { userId });
 
   try {
     const user = await db.user.findUnique({
@@ -84,7 +89,7 @@ export async function getUserOnboardingStatus() {
 
     return { isOnboarded: !!user.industry };
   } catch (error) {
-    console.error("Error fetching user onboarding status:", error.message);
+    logger.error("Error fetching user onboarding status", error);
     throw new Error("Failed to fetch onboarding status: " + error.message);
   }
 }

@@ -4,6 +4,12 @@ import { redirect } from "next/navigation";
 import DashboardView from "./_components/dashboard-view";
 
 
+
+export const metadata = {
+  title: 'Dashboard | Rixora',
+  description: 'Your personalized career insights and industry trends dashboard.',
+};
+
 const IndustryInsightsPage = async () => {
     const { isOnboarded } = await getUserOnboardingStatus();
     const insights = await getIndustryInsights();

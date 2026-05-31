@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" role="img">
+  <title>Rixora wordmark</title>
+  <text x="0" y="24"
+    font-family="Inter,system-ui,sans-serif"
+    font-size="24" font-weight="800"
+    fill="#7C3AED" letter-spacing="-0.5">Rix</text>
+  <text x="42" y="24"
+    font-family="Inter,system-ui,sans-serif"
+    font-size="24" font-weight="300"
+    fill="#4F46E5" letter-spacing="-0.5">ora</text>
+</svg>

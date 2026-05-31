@@ -8,25 +8,25 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 220 90% 55%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 210 40% 96.1%;   /* 👈 defines bg-muted */
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 220 90% 70%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 220 90% 55%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 220 90% 70%;
     --radius: 0.5rem;
   }
 
@@ -225,3 +225,6 @@ body {
     animation: fadeInUp 0.5s ease-out both;
   }
 }
+/* Rixora Dark Mode Logo Colors */
+.dark svg text[fill="#7C3AED"] { fill: #A78BFA; }
+.dark svg text[fill="#4F46E5"] { fill: #818CF8; }

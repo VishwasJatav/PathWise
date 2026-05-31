@@ -49,7 +49,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Install Prisma CLI globally for runtime migrations
-RUN npm install -g prisma@^6.14.0
+RUN npm install -g prisma@5.22.0
 
 # Copy Prisma schema (needed for migrations at runtime)
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma

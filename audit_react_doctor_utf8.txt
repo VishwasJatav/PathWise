@@ -1,0 +1,48 @@
+node.exe : npm warn EBADENGINE Unsupported engine {
+At C:\Program Files\nodejs\npx.ps1:29 char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn EBADENGINE Unsupported engine {:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm warn EBADENGINE   package: 'ini@7.0.0',
+npm warn EBADENGINE   required: { node: '^22.22.2 || ^24.15.0 || >=26.0.0' },
+npm warn EBADENGINE   current: { node: 'v22.12.0', npm: '11.4.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'eslint-scope@9.1.2',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.13.0 || >=24' },
+npm warn EBADENGINE   current: { node: 'v22.12.0', npm: '11.4.2' }
+npm warn EBADENGINE }
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'eslint-visitor-keys@5.0.1',
+npm warn EBADENGINE   required: { node: '^20.19.0 || ^22.13.0 || >=24' },
+npm warn EBADENGINE   current: { node: 'v22.12.0', npm: '11.4.2' }
+npm warn EBADENGINE }
+[1mreact-doctor[22m [2mv0.2.14[22m
+
+[90m  [39m
+[32m√[39m Scanned 113 files in 15.6s
+
+  [1mCorrectness[22m [2m>[22m [31m1 error[39m[2m, [22m[33m[2m46 warnings[22m[39m
+  [1mAccessibility[22m [2m>[22m [31m3 errors[39m[2m, [22m[33m[2m21 warnings[22m[39m
+  [1mState & Effects[22m [2m>[22m [31m4 errors[39m[2m, [22m[33m[2m15 warnings[22m[39m
+  [1mServer[22m [2m>[22m [31m1 error[39m[2m, [22m[33m[2m5 warnings[22m[39m
+  [1mArchitecture[22m [2m>[22m [33m[2m204 warnings[22m[39m
+  [1mDead Code[22m [2m>[22m [33m[2m90 warnings[22m[39m
+  [1mPerformance[22m [2m>[22m [33m[2m36 warnings[22m[39m
+  [1mBundle Size[22m [2m>[22m [33m[2m13 warnings[22m[39m
+  [1mNext.js[22m [2m>[22m [33m[2m11 warnings[22m[39m
+
+  [33m┌─────┐[39m  [33m54[39m [2m/ 100[22m [33mNeeds work[39m [2m·[22m [2mmy-app[22m
+  [33m│ • • │[39m  [33m███████████████████████████[39m[2m░░░░░░░░░░░░░░░░░░░░░░░[22m
+  [33m│  ─  │[39m  React Doctor [2m(https://react.doctor)[22m
+  [33m└─────┘[39m
+
+  [31m450 issues[39m
+[2m  Run [36mnpx react-doctor@latest --verbose[39m to list every issue with its fix-recipe URL[22m
+[2m  Each rule links a canonical fix recipe to fetch & follow before fixing, e.g. [36mhttps://www.react.doctor/prompts/rules/react-doctor/require-reduced-motion.md[39m[22m
+
+  [1m→ Share:[22m [36mhttps://www.react.doctor/share?p=my-app&s=54&e=9&w=441&f=102[39m
+
+

@@ -1,4 +1,4 @@
-name: CI — Lint & Build
+name: CI → Rixora Deploy
 
 on:
   push:
@@ -86,7 +86,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/pathwise
+          images: ghcr.io/${{ github.repository_owner }}/rixora
           tags: |
             type=sha,prefix=sha-
             type=raw,value=latest

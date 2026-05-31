@@ -1,3 +1,6 @@
+# WARNING: For production, replace env_file with Docker secrets or a secrets manager.
+# Never run "docker compose config" in CI logs — it prints all secret values.
+
 services:
   # ── Next.js Application ──────────────────────────────────
   app:
@@ -9,9 +12,9 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgresql://pathwise:pathwise_secret@db:5432/pathwise?schema=public
-      - OLLAMA_URL=http://ollama:11434
-      - REDIS_URL=redis://redis:6379
+      DATABASE_URL: ${DATABASE_URL}
+      OLLAMA_URL: ${OLLAMA_URL:-http://ollama:11434}
+      REDIS_URL: ${REDIS_URL}
     depends_on:
       db:
         condition: service_healthy
@@ -27,13 +30,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: pathwise
-      POSTGRES_PASSWORD: pathwise_secret
-      POSTGRES_DB: pathwise
+      POSTGRES_USER: ${POSTGRES_USER:-rixora}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rixora_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-pathwise}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U pathwise" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rixora}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -58,7 +61,6 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
-    # Overriding entrypoint to pull llama3 in background before starting server
     entrypoint: /bin/sh -c "ollama serve & sleep 5 && ollama pull llama3 && wait"
     restart: unless-stopped
 

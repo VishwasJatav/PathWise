@@ -49,11 +49,20 @@ export const ResumeProvider = ({ children, initialData }) => {
     });
 
     const resumeData = watch();
+    const [debouncedResumeData, setDebouncedResumeData] = useState(resumeData);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedResumeData(resumeData);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [resumeData]);
 
     return (
         <ResumeContext.Provider
             value={{
                 resumeData,
+                debouncedResumeData,
                 initialData,
                 template,
                 setTemplate,

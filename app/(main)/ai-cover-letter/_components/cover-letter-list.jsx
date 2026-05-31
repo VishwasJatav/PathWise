@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { deleteCoverLetter } from "@/actions/cover-letter";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 
 export default function CoverLetterList({ coverLetters }) {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function CoverLetterList({ coverLetters }) {
 
   if (!coverLetters?.length) {
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+      <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
         <Card>
           <CardHeader>
             <CardTitle>No Cover Letters Yet</CardTitle>
@@ -50,15 +50,15 @@ export default function CoverLetterList({ coverLetters }) {
             </CardDescription>
           </CardHeader>
         </Card>
-      </motion.div>
+      </m.div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="gap-y-">
       <AnimatePresence>
         {coverLetters.map((letter) => (
-          <motion.div
+          <m.div
             key={letter.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,22 +76,22 @@ export default function CoverLetterList({ coverLetters }) {
                       Created {format(new Date(letter.createdAt), "PPP")}
                     </CardDescription>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex gap-x-">
                     {/* Wrap Eye button in motion.div for hover effect */}
-                    <motion.div whileHover={{ scale: 1.05 }}>
-                      <Button
+                    <m.div whileHover={{ scale: 1.05 }}>
+                      <Button type="button"
                         variant="outline"
                         size="icon"
                         onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}
                       >
-                        <Eye className="h-4 w-4" />
+                        <Eye className="size-" />
                       </Button>
-                    </motion.div>
+                    </m.div>
 
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button variant="outline" size="icon">
-                          <Trash2 className="h-4 w-4" />
+                        <Button type="button" variant="outline" size="icon">
+                          <Trash2 className="size-" />
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
@@ -122,7 +122,7 @@ export default function CoverLetterList({ coverLetters }) {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </m.div>
         ))}
       </AnimatePresence>
     </div>

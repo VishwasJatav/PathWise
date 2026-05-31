@@ -1,0 +1,10 @@
+[allowlist]
+description = "Global allowlist rules"
+
+paths = [
+    '''.env.example''',
+    '''README.md''',
+    '''RULES.md''',
+    '''AuditStatus.md''',
+    '''pathwise_improvement_plan_and_followup_prompt.md'''
+]

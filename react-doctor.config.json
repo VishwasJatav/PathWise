@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "unused-file": "off",
+    "use-lazy-motion": "off",
+    "design-no-redundant-size-axes": "off",
+    "require-reduced-motion": "off",
+    "no-react19-deprecated-apis": "off",
+    "jsx-no-constructed-context-values": "off",
+    "zod-v4-no-deprecated-error-customization": "off",
+    "no-derived-state": "off",
+    "exhaustive-deps": "off",
+    "prefer-module-scope-static-value": "off",
+    "server-after-nonblocking": "off"
+  }
+}

@@ -1,0 +1,211 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: accessibility.spec.ts >> Accessibility Audits >> landing page should not have any critical accessibility violations
+- Location: tests\accessibility.spec.ts:5:7
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "RIXORA" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - heading "RIXORA" [level=1] [ref=e5]
+  - main [ref=e6]:
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img [ref=e14]
+          - text: Rixora AI Career & Study Hub 2.0
+        - heading "Navigate your career trajectory." [level=1] [ref=e19]:
+          - text: Navigate your
+          - text: career trajectory.
+        - paragraph [ref=e20]: Stop guessing what employers want. Let our advanced AI analyze market data, simulate interviews, and build your perfect ATS-optimized resume.
+        - link "Start Architecting" [ref=e22] [cursor=pointer]:
+          - /url: /dashboard
+          - button "Start Architecting" [ref=e24]:
+            - generic [ref=e26]:
+              - text: Start Architecting
+              - img [ref=e28]
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e35]
+          - generic [ref=e39]: How do I transition from Marketing to Tech inside 6 months?
+        - generic [ref=e42]:
+          - img [ref=e44]
+          - generic [ref=e49]:
+            - paragraph [ref=e50]: Based on current 2025 market data, a transition from Marketing to Tech is highly viable if you target Growth Product Management or Developer Relations.
+            - generic [ref=e51]:
+              - generic [ref=e52]:
+                - img [ref=e53]
+                - generic [ref=e56]: Learn SQL & Python
+              - generic [ref=e57]:
+                - img [ref=e58]
+                - generic [ref=e66]: Target SaaS Startups
+            - paragraph [ref=e67]:
+              - img [ref=e68]
+              - text: "Estimated salary bump: +24% to 35%"
+    - generic [ref=e72]:
+      - heading "Powerful Features for Your Career Growth" [level=2] [ref=e74]
+      - generic [ref=e75]:
+        - generic [ref=e79]:
+          - img [ref=e81]
+          - heading "AI-Powered Career Guidance" [level=3] [ref=e95]
+          - paragraph [ref=e96]: Get personalized career advice and insights powered by advanced AI technology.
+        - generic [ref=e100]:
+          - img [ref=e102]
+          - heading "Interview Preparation" [level=3] [ref=e105]
+          - paragraph [ref=e106]: Practice with role-specific questions and get instant feedback to improve your performance.
+        - generic [ref=e110]:
+          - img [ref=e112]
+          - heading "Industry Insights" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Stay ahead with real-time industry trends, salary data, and market analysis.
+        - generic [ref=e120]:
+          - img [ref=e122]
+          - heading "Smart Resume Creation" [level=3] [ref=e127]
+          - paragraph [ref=e128]: Generate ATS-optimized resumes with AI assistance.
+    - generic [ref=e131]:
+      - generic [ref=e133]:
+        - heading "50+" [level=3] [ref=e134]
+        - paragraph [ref=e135]: Industries Covered
+      - generic [ref=e137]:
+        - heading "1000+" [level=3] [ref=e138]
+        - paragraph [ref=e139]: Interview Questions
+      - generic [ref=e141]:
+        - heading "95%" [level=3] [ref=e142]
+        - paragraph [ref=e143]: Success Rate
+      - generic [ref=e145]:
+        - heading "24/7" [level=3] [ref=e146]
+        - paragraph [ref=e147]: AI Support
+    - generic [ref=e149]:
+      - generic [ref=e151]:
+        - heading "How It Works" [level=2] [ref=e152]
+        - paragraph [ref=e153]: Four simple steps to accelerate your career growth
+      - generic [ref=e154]:
+        - generic [ref=e156]:
+          - img [ref=e158]
+          - heading "Professional Onboarding" [level=3] [ref=e163]
+          - paragraph [ref=e164]: Share your industry and expertise for personalized guidance
+        - generic [ref=e166]:
+          - img [ref=e168]
+          - heading "Craft Your Documents" [level=3] [ref=e172]
+          - paragraph [ref=e173]: Create ATS-optimized resumes and compelling cover letters
+        - generic [ref=e175]:
+          - img [ref=e177]
+          - heading "Prepare for Interviews" [level=3] [ref=e182]
+          - paragraph [ref=e183]: Practice with AI-powered mock interviews tailored to your role
+        - generic [ref=e185]:
+          - img [ref=e187]
+          - heading "Track Your Progress" [level=3] [ref=e190]
+          - paragraph [ref=e191]: Monitor improvements with detailed performance analytics
+    - generic [ref=e193]:
+      - heading "What Our Users Say" [level=2] [ref=e195]
+      - generic [ref=e196]:
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - img "Sarah Chen" [ref=e203]
+            - generic [ref=e204]:
+              - paragraph [ref=e205]: Sarah Chen
+              - paragraph [ref=e206]: Software Engineer
+              - paragraph [ref=e207]: Tech Giant Co.
+          - blockquote [ref=e208]:
+            - paragraph [ref=e209]:
+              - generic [ref=e210]: "\""
+              - text: The AI-powered interview prep was a game-changer. Landed my dream job at a top tech company!
+              - generic [ref=e211]: "\""
+        - generic [ref=e215]:
+          - generic [ref=e216]:
+            - img "Michael Rodriguez" [ref=e218]
+            - generic [ref=e219]:
+              - paragraph [ref=e220]: Michael Rodriguez
+              - paragraph [ref=e221]: Product Manager
+              - paragraph [ref=e222]: StartUp Inc.
+          - blockquote [ref=e223]:
+            - paragraph [ref=e224]:
+              - generic [ref=e225]: "\""
+              - text: The industry insights helped me pivot my career successfully. The salary data was spot-on!
+              - generic [ref=e226]: "\""
+        - generic [ref=e230]:
+          - generic [ref=e231]:
+            - img "Priya Patel" [ref=e233]
+            - generic [ref=e234]:
+              - paragraph [ref=e235]: Priya Patel
+              - paragraph [ref=e236]: Marketing Director
+              - paragraph [ref=e237]: Global Corp
+          - blockquote [ref=e238]:
+            - paragraph [ref=e239]:
+              - generic [ref=e240]: "\""
+              - text: My resume's ATS score improved significantly. Got more interviews in two weeks than in six months!
+              - generic [ref=e241]: "\""
+    - generic [ref=e243]:
+      - generic [ref=e245]:
+        - heading "Frequently Asked Questions" [level=2] [ref=e246]
+        - paragraph [ref=e247]: Find answers to common questions about our platform
+      - generic [ref=e250]:
+        - heading "What makes Rixora unique as a career development tool?" [level=3] [ref=e252]:
+          - button "What makes Rixora unique as a career development tool?" [ref=e253] [cursor=pointer]:
+            - text: What makes Rixora unique as a career development tool?
+            - img
+        - heading "How does Rixora create tailored content?" [level=3] [ref=e255]:
+          - button "How does Rixora create tailored content?" [ref=e256] [cursor=pointer]:
+            - text: How does Rixora create tailored content?
+            - img
+        - heading "How accurate and up-to-date are Rixora's industry insights?" [level=3] [ref=e258]:
+          - button "How accurate and up-to-date are Rixora's industry insights?" [ref=e259] [cursor=pointer]:
+            - text: How accurate and up-to-date are Rixora's industry insights?
+            - img
+        - heading "Is my data secure with Rixora?" [level=3] [ref=e261]:
+          - button "Is my data secure with Rixora?" [ref=e262] [cursor=pointer]:
+            - text: Is my data secure with Rixora?
+            - img
+        - heading "How can I track my interview preparation progress?" [level=3] [ref=e264]:
+          - button "How can I track my interview preparation progress?" [ref=e265] [cursor=pointer]:
+            - text: How can I track my interview preparation progress?
+            - img
+        - heading "Can I edit the AI-generated content?" [level=3] [ref=e267]:
+          - button "Can I edit the AI-generated content?" [ref=e268] [cursor=pointer]:
+            - text: Can I edit the AI-generated content?
+            - img
+    - generic [ref=e272]:
+      - heading "Ready to Accelerate Your Career?" [level=2] [ref=e273]
+      - paragraph [ref=e274]: Join thousands of professionals who are advancing their careers with AI-powered guidance.
+      - link "Start Your Journey Today" [ref=e275] [cursor=pointer]:
+        - /url: /dashboard
+        - button "Start Your Journey Today" [ref=e276]:
+          - text: Start Your Journey Today
+          - img
+  - region "Notifications alt+T"
+  - contentinfo [ref=e277]:
+    - generic [ref=e278]:
+      - paragraph [ref=e279]: Made with ❤️ by Vishwas and His Team
+      - generic [ref=e280]:
+        - link "Visit Rixora on Facebook" [ref=e281] [cursor=pointer]:
+          - /url: https://facebook.com
+          - img [ref=e282]
+        - link "Visit Rixora on Twitter" [ref=e284] [cursor=pointer]:
+          - /url: https://twitter.com
+          - img [ref=e285]
+        - link "Visit Rixora on Instagram" [ref=e287] [cursor=pointer]:
+          - /url: https://instagram.com
+          - img [ref=e288]
+        - link "Visit Rixora on LinkedIn" [ref=e292] [cursor=pointer]:
+          - /url: https://linkedin.com
+          - img [ref=e293]
+    - paragraph [ref=e297]: © 2026 Vishwas & Team. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=e303] [cursor=pointer]:
+    - img [ref=e304]
+  - alert [ref=e308]
+```

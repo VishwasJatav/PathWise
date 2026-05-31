@@ -67,11 +67,11 @@ function SortableEntryCard({ item, index, handleDelete }) {
         {...listeners}
         className="cursor-grab p-1.5 opacity-0 group-hover:opacity-100 transition-all hover:bg-slate-800 rounded-lg shrink-0"
       >
-        <GripVertical className="h-4 w-4 text-slate-500" />
+        <GripVertical className="size- text-slate-500" />
       </div>
       <Card className="flex-1 bg-[#0f0f12] border-slate-800 shadow-lg group-hover:border-slate-700 transition-all rounded-xl overflow-hidden ring-1 ring-slate-800/50">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5 pb-3">
-          <div className="space-y-1">
+        <CardHeader className="flex flex-row items-center justify-between gap-y- p-5 pb-3">
+          <div className="gap-y-">
             <CardTitle className="text-sm font-bold text-slate-200">
               {item.title} <span className="text-slate-500 font-medium px-1">@</span> {item.organization}
             </CardTitle>
@@ -85,10 +85,10 @@ function SortableEntryCard({ item, index, handleDelete }) {
             variant="ghost"
             size="icon"
             type="button"
-            className="h-8 w-8 text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+            className="size- text-slate-600 hover:text-red-400 hover:bg-red-500/10 transition-colors"
             onClick={() => handleDelete(index)}
           >
-            <X className="h-4 w-4" />
+            <X className="size-" />
           </Button>
         </CardHeader>
         <CardContent className="p-5 pt-0">
@@ -203,7 +203,7 @@ export function EntryForm({ type, entries, onChange }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="gap-y-">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -213,7 +213,7 @@ export function EntryForm({ type, entries, onChange }) {
           items={sortableEntries.map((e) => e.id)}
           strategy={verticalListSortingStrategy}
         >
-          <div className="space-y-4">
+          <div className="gap-y-">
             {sortableEntries.map((item, index) => (
               <SortableEntryCard
                 key={item.id}
@@ -230,15 +230,16 @@ export function EntryForm({ type, entries, onChange }) {
         <Card className="bg-[#0f0f12] border-slate-700 shadow-2xl rounded-2xl overflow-hidden ring-1 ring-blue-500/20 animate-in fade-in slide-in-from-bottom-4 duration-300">
           <CardHeader className="bg-slate-900/50 border-b border-slate-800 p-6 pb-4">
             <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
-              <PlusCircle className="h-5 w-5 text-blue-500" />
+              <PlusCircle className="size- text-blue-500" />
               Add New {type}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-8 p-8">
+          <CardContent className="gap-y- p-8">
             <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-2.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Title / Position</label>
+              <div className="gap-y-">
+                <label htmlFor="title" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Title / Position</label>
                 <Input
+                  id="title"
                   className="bg-[#0a0a0c] border-slate-800 focus:border-blue-500/50 h-11 rounded-xl text-slate-200 placeholder:text-slate-800 font-medium"
                   placeholder="Software Engineer"
                   {...register("title")}
@@ -247,9 +248,10 @@ export function EntryForm({ type, entries, onChange }) {
                   <p className="text-[10px] text-red-500 font-bold uppercase tracking-tight ml-1">{errors.title.message}</p>
                 )}
               </div>
-              <div className="space-y-2.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Organization / Company</label>
+              <div className="gap-y-">
+                <label htmlFor="organization" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Organization / Company</label>
                 <Input
+                  id="organization"
                   className="bg-[#0a0a0c] border-slate-800 focus:border-blue-500/50 h-11 rounded-xl text-slate-200 placeholder:text-slate-800 font-medium"
                   placeholder="Google"
                   {...register("organization")}
@@ -263,9 +265,10 @@ export function EntryForm({ type, entries, onChange }) {
             </div>
 
             <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-2.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Start Date</label>
+              <div className="gap-y-">
+                <label htmlFor="startDate" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Start Date</label>
                 <Input
+                  id="startDate"
                   type="month"
                   className="bg-[#0a0a0c] border-slate-800 focus:border-blue-500/50 h-11 rounded-xl text-slate-200 color-scheme-dark invert-icons"
                   {...register("startDate")}
@@ -276,9 +279,10 @@ export function EntryForm({ type, entries, onChange }) {
                   </p>
                 )}
               </div>
-              <div className="space-y-2.5">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">End Date</label>
+              <div className="gap-y-">
+                <label htmlFor="endDate" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">End Date</label>
                 <Input
+                  id="endDate"
                   type="month"
                   className="bg-[#0a0a0c] border-slate-800 focus:border-blue-500/50 h-11 rounded-xl text-slate-200 color-scheme-dark invert-icons disabled:opacity-30 transition-opacity"
                   {...register("endDate")}
@@ -292,7 +296,7 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 bg-[#0a0a0c] p-3 px-4 rounded-xl border border-slate-800 w-max hover:border-slate-700 transition-colors cursor-pointer group">
+            <div className="flex items-center gap-x- bg-[#0a0a0c] p-3 px-4 rounded-xl border border-slate-800 w-max hover:border-slate-700 transition-colors cursor-pointer group">
               <input
                 type="checkbox"
                 id="current"
@@ -303,15 +307,16 @@ export function EntryForm({ type, entries, onChange }) {
                     setValue("endDate", "");
                   }
                 }}
-                className="accent-blue-500 w-4 h-4 cursor-pointer"
+                className="accent-blue-500 size- cursor-pointer"
               />
               <label htmlFor="current" className="cursor-pointer select-none font-bold text-[11px] uppercase tracking-widest text-slate-400 group-hover:text-slate-300">I currently work here</label>
             </div>
 
-            <div className="space-y-2.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Description / Key Achievements</label>
+            <div className="gap-y-">
+              <label htmlFor="description" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 ml-1">Description / Key Achievements</label>
               <div className="relative group">
                 <Textarea
+                  id="description"
                   placeholder={`E.g. Developed and optimized features for a high-traffic e-commerce platform...`}
                   className="min-h-[160px] bg-[#0a0a0c] border-slate-800 focus:border-blue-500/50 resize-none text-slate-300 placeholder:text-slate-800 leading-relaxed rounded-xl transition-all duration-300"
                   {...register("description")}
@@ -325,9 +330,9 @@ export function EntryForm({ type, entries, onChange }) {
                   className="absolute bottom-4 right-4 text-[10px] uppercase font-bold tracking-widest text-blue-500 hover:text-blue-400 hover:bg-blue-500/10 transition-all border border-blue-500/10 bg-[#0a0a0c]/80 backdrop-blur"
                 >
                   {isImproving ? (
-                    <Loader2 className="h-3 w-3 mr-2 animate-spin" />
+                    <Loader2 className="size- mr-2 animate-spin" />
                   ) : (
-                    <Sparkles className="h-3 w-3 mr-2" />
+                    <Sparkles className="size- mr-2" />
                   )}
                   Improve with AI
                 </Button>
@@ -339,7 +344,7 @@ export function EntryForm({ type, entries, onChange }) {
               )}
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between space-x-2 bg-slate-900/50 border-t border-slate-800 p-8 rounded-b-2xl">
+          <CardFooter className="flex justify-between gap-x- bg-slate-900/50 border-t border-slate-800 p-8 rounded-b-2xl">
             <Button
               type="button"
               variant="ghost"
@@ -361,12 +366,12 @@ export function EntryForm({ type, entries, onChange }) {
           </CardFooter>
         </Card>
       ) : (
-        <Button
+        <Button type="button"
           className="w-full flex flex-col items-center justify-center h-24 border-dashed border-2 border-slate-800 hover:border-blue-500/50 bg-slate-900/10 hover:bg-blue-500/5 transition-all rounded-2xl group"
           variant="outline"
           onClick={() => setIsAdding(true)}
         >
-          <PlusCircle className="h-6 w-6 mb-2 text-slate-600 group-hover:text-blue-500 transition-colors" />
+          <PlusCircle className="size- mb-2 text-slate-600 group-hover:text-blue-500 transition-colors" />
           <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 group-hover:text-slate-300">Add New {type}</span>
         </Button>
       )}

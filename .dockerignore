@@ -11,8 +11,11 @@ out
 .gitignore
 
 # Environment files
-!.env
-!.env.local
+.env
+.env.local
+.env.production
+.env.development
+.env.test
 
 # IDE / OS files
 .vscode

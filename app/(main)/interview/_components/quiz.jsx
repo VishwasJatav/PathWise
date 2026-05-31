@@ -16,7 +16,7 @@ import { generateQuiz, saveQuizResult } from "@/actions/interview";
 import QuizResult from "./quiz-result";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { CheckCircle, XCircle, BookOpen, Timer, Trophy } from "lucide-react";
 
 export default function Quiz() {
@@ -125,7 +125,7 @@ export default function Quiz() {
     return (
       <Card className="mx-2 shadow-lg border-gray-700">
         <CardHeader className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-gray-400" />
+          <BookOpen className="size- text-gray-400" />
           <CardTitle className="text-white">Ready to test your knowledge?</CardTitle>
         </CardHeader>
         <CardContent>
@@ -135,7 +135,7 @@ export default function Quiz() {
           </p>
         </CardContent>
         <CardFooter>
-          <Button
+          <Button type="button"
             onClick={generateQuizFn}
             className="w-full bg-gray-700/40 backdrop-blur-md border border-gray-500 text-gray-200 hover:bg-gray-700/60 transition"
           >
@@ -149,7 +149,7 @@ export default function Quiz() {
   const question = quizData[currentQuestion];
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -162,26 +162,26 @@ export default function Quiz() {
               Question {currentQuestion + 1} <span className="text-gray-400 text-base font-normal">of {quizData.length}</span>
             </CardTitle>
             <p className="text-xs text-indigo-400 mt-1 flex items-center gap-1">
-              <Trophy className="w-3 h-3" /> Adaptive Difficulty
+              <Trophy className="size-" /> Adaptive Difficulty
             </p>
           </div>
           <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${timeLeft <= 10 ? 'bg-red-500/10 text-red-400 border-red-500/20 animate-pulse' : 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
             }`}>
-            <Timer className="w-4 h-4" />
+            <Timer className="size-" />
             <span className="font-mono font-bold">{timeLeft}s</span>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-4">
+        <CardContent className="gap-y-">
           <p className="text-lg font-semibold text-white">{question.question}</p>
 
           <RadioGroup
             onValueChange={handleAnswer}
             value={answers[currentQuestion]}
-            className="space-y-3"
+            className="gap-y-"
           >
             {question.options.map((option, idx) => (
-              <motion.div
+              <m.div
                 key={idx}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
@@ -191,27 +191,27 @@ export default function Quiz() {
                 <Label htmlFor={`option-${idx}`} className="text-gray-200">
                   {option}
                 </Label>
-              </motion.div>
+              </m.div>
             ))}
           </RadioGroup>
 
           {showExplanation && (
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="mt-4 p-4 bg-gray-800/60 rounded-lg border border-gray-600 backdrop-blur-md"
             >
               <p className="font-semibold text-white flex items-center gap-2">
-                <CheckCircle className="h-5 w-5 text-green-400" /> Explanation:
+                <CheckCircle className="size- text-green-400" /> Explanation:
               </p>
               <p className="text-gray-300">{question.explanation}</p>
-            </motion.div>
+            </m.div>
           )}
         </CardContent>
 
         <CardFooter className="flex justify-between gap-2">
           {!showExplanation && (
-            <Button
+            <Button type="button"
               onClick={() => setShowExplanation(true)}
               variant="outline"
               disabled={!answers[currentQuestion]}
@@ -220,7 +220,7 @@ export default function Quiz() {
               Show Explanation
             </Button>
           )}
-          <Button
+          <Button type="button"
             onClick={handleNext}
             disabled={!answers[currentQuestion] || savingResult}
             className="ml-auto bg-gray-700/40 backdrop-blur-md border border-gray-500 text-gray-200 hover:bg-gray-700/60 flex items-center gap-2 transition"
@@ -229,6 +229,6 @@ export default function Quiz() {
           </Button>
         </CardFooter>
       </Card>
-    </motion.div>
+    </m.div>
   );
 }

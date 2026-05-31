@@ -14,8 +14,8 @@ export default function ErrorBoundary({ error, reset }) {
         <div className="flex flex-col items-center justify-center min-h-[50vh] p-4">
             <Card className="max-w-md w-full border-red-500/20 bg-red-500/5">
                 <CardHeader className="text-center pb-2">
-                    <div className="mx-auto w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mb-4">
-                        <AlertTriangle className="h-6 w-6 text-red-500" />
+                    <div className="mx-auto size- bg-red-500/10 rounded-full flex items-center justify-center mb-4">
+                        <AlertTriangle className="size- text-red-500" />
                     </div>
                     <CardTitle className="text-xl font-bold">Unexpected Error Occurred</CardTitle>
                 </CardHeader>
@@ -25,7 +25,7 @@ export default function ErrorBoundary({ error, reset }) {
                     </p>
                 </CardContent>
                 <CardFooter className="flex justify-center">
-                    <Button onClick={() => reset()} variant="outline" className="text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20">
+                    <Button type="button" onClick={() => reset()} variant="outline" className="text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20">
                         Try again
                     </Button>
                 </CardFooter>

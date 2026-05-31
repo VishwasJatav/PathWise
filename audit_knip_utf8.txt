@@ -1,0 +1,199 @@
+Unused files (55)
+actions/api-usage.js                            
+actions/cover-letter.js                         
+actions/dashboard.js                            
+actions/interview.js                            
+actions/resume.js                               
+actions/user.js                                 
+app/(main)/resume/_components/resume-builder.jsx
+app/lib/helper.js                               
+app/lib/schema.js                               
+app/page.module.css                             
+components/header-user-sync.jsx                 
+components/header.jsx                           
+components/hero.jsx                             
+components/loaders/AILoader.jsx                 
+components/loaders/ButtonLoader.jsx             
+components/loaders/GlobalLoader.jsx             
+components/loaders/RouteTransitionLoader.jsx    
+components/providers/client-logger-provider.jsx 
+components/providers/loading-provider.jsx       
+components/theme-provider.jsx                   
+components/ui/accordion.jsx                     
+components/ui/alert-dialog.jsx                  
+components/ui/badge.jsx                         
+components/ui/button.jsx                        
+components/ui/card.jsx                          
+components/ui/command.jsx                       
+components/ui/dialog.jsx                        
+components/ui/dropdown-menu.jsx                 
+components/ui/form.jsx                          
+components/ui/input.jsx                         
+components/ui/label.jsx                         
+components/ui/popover.jsx                       
+components/ui/progress.jsx                      
+components/ui/radio-group.jsx                   
+components/ui/select.jsx                        
+components/ui/sonner.jsx                        
+components/ui/tabs.jsx                          
+components/ui/textarea.jsx                      
+data/faqs.js                                    
+data/features.js                                
+data/howItWorks.js                              
+data/industries.js                              
+data/testimonial.js                             
+hooks/use-fetch.js                              
+lib/ai/provider.js                              
+lib/checkUser.js                                
+lib/inngest/client.js                           
+lib/inngest/functions.js                        
+lib/logger.js                                   
+lib/prisma.js                                   
+lib/redis.js                                    
+lib/utils.js                                    
+list-models.js                                  
+test-ai.js                                      
+test-ai.mjs                                     
+Unused dependencies (22)
+@google/generative-ai          package.json:22:6
+@prisma/client                 package.json:24:6
+@radix-ui/react-accordion      package.json:25:6
+@radix-ui/react-alert-dialog   package.json:26:6
+@radix-ui/react-dialog         package.json:27:6
+@radix-ui/react-dropdown-menu  package.json:28:6
+@radix-ui/react-label          package.json:29:6
+@radix-ui/react-progress       package.json:30:6
+@radix-ui/react-radio-group    package.json:31:6
+@radix-ui/react-select         package.json:32:6
+@radix-ui/react-slot           package.json:33:6
+@radix-ui/react-tabs           package.json:34:6
+chart.js                       package.json:36:6
+class-variance-authority       package.json:37:6
+clsx                           package.json:38:6
+cmdk                           package.json:39:6
+dotenv                         package.json:41:6
+ioredis                        package.json:45:6
+next-themes                    package.json:48:6
+radix-ui                       package.json:49:6
+react-chartjs-2                package.json:51:6
+tailwind-merge                 package.json:57:6
+Unused devDependencies (2)
+eslint-config-next  package.json:67:6
+tw-animate-css      package.json:71:6
+Unresolved imports (108)
+@/components/ui/button                         app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:8:24 
+@/components/ui/card                           app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:15:8 
+@/components/ui/input                          app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:16:23
+@/components/ui/label                          app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:17:23
+@/components/ui/textarea                       app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:18:26
+@/actions/cover-letter                         app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:19:37
+@/hooks/use-fetch                              app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:20:22
+@/app/lib/schema                               app/(main)/ai-cover-letter/_components/cover-letter-generator.jsx:21:35
+@/components/ui/card                           app/(main)/ai-cover-letter/_components/cover-letter-list.jsx:13:8      
+@/components/ui/button                         app/(main)/ai-cover-letter/_components/cover-letter-list.jsx:14:24     
+@/components/ui/alert-dialog                   app/(main)/ai-cover-letter/_components/cover-letter-list.jsx:25:8      
+@/actions/cover-letter                         app/(main)/ai-cover-letter/_components/cover-letter-list.jsx:26:35     
+@/components/ui/button                         app/(main)/ai-cover-letter/[id]/page.jsx:3:24                          
+@/actions/cover-letter                         app/(main)/ai-cover-letter/[id]/page.jsx:4:32                          
+@/components/ui/button                         app/(main)/ai-cover-letter/new/page.jsx:3:24                           
+@/actions/cover-letter                         app/(main)/ai-cover-letter/page.jsx:1:33                               
+@/components/ui/button                         app/(main)/ai-cover-letter/page.jsx:4:24                               
+@/actions/api-usage                            app/(main)/api-usage/page.jsx:1:88                                     
+@/components/ui/button                         app/(main)/assessments/page.jsx:2:24                                   
+@/components/ui/card                           app/(main)/assessments/page.jsx:3:58                                   
+@/components/ui/badge                          app/(main)/dashboard/_components/dashboard-view.jsx:6:23               
+@/components/ui/card                           app/(main)/dashboard/_components/dashboard-view.jsx:7:75               
+@/components/ui/progress                       app/(main)/dashboard/_components/dashboard-view.jsx:8:26               
+@/actions/dashboard                            app/(main)/dashboard/page.jsx:1:37                                     
+@/actions/user                                 app/(main)/dashboard/page.jsx:2:41                                     
+@/components/ui/card                           app/(main)/interview/_components/performance-chart.jsx:18:8            
+@/components/ui/button                         app/(main)/interview/_components/quiz-list.jsx:6:24                    
+@/actions/interview                            app/(main)/interview/_components/quiz-list.jsx:8:32                    
+@/components/ui/card                           app/(main)/interview/_components/quiz-list.jsx:15:8                    
+@/components/ui/dialog                         app/(main)/interview/_components/quiz-list.jsx:21:8                    
+@/components/ui/button                         app/(main)/interview/_components/quiz-result.jsx:4:24                  
+@/components/ui/card                           app/(main)/interview/_components/quiz-result.jsx:5:41                  
+@/components/ui/progress                       app/(main)/interview/_components/quiz-result.jsx:6:26                  
+@/components/ui/button                         app/(main)/interview/_components/quiz.jsx:5:24                         
+@/components/ui/card                           app/(main)/interview/_components/quiz.jsx:12:8                         
+@/components/ui/radio-group                    app/(main)/interview/_components/quiz.jsx:13:44                        
+@/components/ui/label                          app/(main)/interview/_components/quiz.jsx:14:23                        
+@/actions/interview                            app/(main)/interview/_components/quiz.jsx:15:46                        
+@/hooks/use-fetch                              app/(main)/interview/_components/quiz.jsx:17:22                        
+@/components/ui/card                           app/(main)/interview/_components/stats-cards.jsx:2:58                  
+@/components/ui/button                         app/(main)/interview/mock/page.jsx:1:24                                
+@/actions/interview                            app/(main)/interview/page.jsx:1:32                                     
+@/app/lib/schema                               app/(main)/onboarding/_components/onboarding-form.jsx:7:34             
+@/components/ui/card                           app/(main)/onboarding/_components/onboarding-form.jsx:8:75             
+@/components/ui/label                          app/(main)/onboarding/_components/onboarding-form.jsx:9:23             
+@/hooks/use-fetch                              app/(main)/onboarding/_components/onboarding-form.jsx:10:22            
+@/actions/user                                 app/(main)/onboarding/_components/onboarding-form.jsx:11:28            
+@/components/ui/input                          app/(main)/onboarding/_components/onboarding-form.jsx:12:23            
+@/components/ui/textarea                       app/(main)/onboarding/_components/onboarding-form.jsx:13:26            
+@/components/ui/button                         app/(main)/onboarding/_components/onboarding-form.jsx:14:24            
+@/lib/utils                                    app/(main)/onboarding/_components/onboarding-form.jsx:17:20            
+@/components/ui/command                        app/(main)/onboarding/_components/onboarding-form.jsx:25:8             
+@/components/ui/popover                        app/(main)/onboarding/_components/onboarding-form.jsx:30:8             
+@/actions/user                                 app/(main)/onboarding/page.jsx:1:41                                    
+@/data/industries                              app/(main)/onboarding/page.jsx:4:26                                    
+@/components/ui/button                         app/(main)/resume/_components/entry-form.jsx:7:24                      
+@/components/ui/input                          app/(main)/resume/_components/entry-form.jsx:8:23                      
+@/components/ui/textarea                       app/(main)/resume/_components/entry-form.jsx:9:26                      
+@/components/ui/card                           app/(main)/resume/_components/entry-form.jsx:16:8                      
+@/app/lib/schema                               app/(main)/resume/_components/entry-form.jsx:17:29                     
+@/actions/resume                               app/(main)/resume/_components/entry-form.jsx:19:31                     
+@/hooks/use-fetch                              app/(main)/resume/_components/entry-form.jsx:21:22                     
+@/lib/utils                                    app/(main)/resume/_components/PreviewPanel/ResumeDocPreview.jsx:3:20   
+@/components/ui/button                         app/(main)/resume/_components/resume-builder-v2.jsx:7:24               
+@/components/loaders/ButtonLoader              app/(main)/resume/_components/resume-builder-v2.jsx:9:26               
+@/lib/utils                                    app/(main)/resume/_components/resume-builder-v2.jsx:10:20              
+@/components/providers/loading-provider        app/(main)/resume/_components/resume-builder-v2.jsx:11:28              
+@/components/ui/select                         app/(main)/resume/_components/resume-builder-v2.jsx:18:8               
+@/components/ui/dialog                         app/(main)/resume/_components/resume-builder-v2.jsx:24:8               
+@/hooks/use-fetch                              app/(main)/resume/_components/resume-builder-v2.jsx:26:22              
+@/actions/resume                               app/(main)/resume/_components/resume-builder-v2.jsx:27:28              
+@/components/ui/input                          app/(main)/resume/_components/resume-editor.jsx:5:23                   
+@/components/ui/textarea                       app/(main)/resume/_components/resume-editor.jsx:6:26                   
+@/components/ui/button                         app/(main)/resume/_components/resume-editor.jsx:7:24                   
+@/components/ui/card                           app/(main)/resume/_components/resume-editor.jsx:8:35                   
+@/components/loaders/ButtonLoader              app/(main)/resume/_components/resume-editor.jsx:25:26                  
+@/components/providers/loading-provider        app/(main)/resume/_components/resume-editor.jsx:26:28                  
+@/hooks/use-fetch                              app/(main)/resume/_components/resume-editor.jsx:28:22                  
+@/actions/resume                               app/(main)/resume/_components/resume-editor.jsx:29:31                  
+@/lib/utils                                    app/(main)/resume/_components/resume-preview.jsx:5:20                  
+@/app/lib/schema                               app/(main)/resume/_components/resume-provider.jsx:6:30                 
+@/lib/utils                                    app/(main)/resume/_components/TemplatePicker/FilterTabs.jsx:3:20       
+@/lib/utils                                    app/(main)/resume/_components/TemplatePicker/TemplateCard.jsx:5:20     
+@/lib/utils                                    app/(main)/resume/_components/TemplatePicker/TemplateMini.jsx:3:20     
+@/lib/utils                                    app/(main)/resume/_components/TemplatePicker/TemplatePicker.jsx:14:20  
+@/actions/resume                               app/(main)/resume/page.jsx:1:27                                        
+@/lib/logger                                   app/api/client-logs/route.js:2:24                                      
+@/lib/inngest/client                           app/api/inngest/route.js:1:25                                          
+@/lib/inngest/functions                        app/api/inngest/route.js:2:42                                          
+@/components/ui/button                         app/error.jsx:4:24                                                     
+@/components/ui/card                           app/error.jsx:6:70                                                     
+@/components/ui/button                         app/global-error.jsx:4:24                                              
+@/components/theme-provider                    app/layout.js:3:31                                                     
+@/components/header                            app/layout.js:4:20                                                     
+@/components/header-user-sync                  app/layout.js:5:28                                                     
+@/components/providers/loading-provider        app/layout.js:10:33                                                    
+@/components/loaders/RouteTransitionLoader     app/layout.js:11:35                                                    
+@/components/providers/client-logger-provider  app/layout.js:12:38                                                    
+@/components/ui/button                         app/not-found.jsx:2:24                                                 
+@/components/ui/button                         app/page.jsx:5:24                                                      
+@/components/ui/card                           app/page.jsx:6:35                                                      
+@/components/hero                              app/page.jsx:8:25                                                      
+@/components/ui/accordion                      app/page.jsx:14:8                                                      
+@/data/features                                app/page.jsx:16:26                                                     
+@/data/testimonial                             app/page.jsx:17:45                                                     
+@/data/faqs                                    app/page.jsx:18:22                                                     
+@/data/howItWorks                              app/page.jsx:19:28                                                     
+@/lib/logger                                   middleware.js:3:24                                                     
+node.exe : Configuration hints (1)
+At C:\Program Files\nodejs\npx.ps1:29 char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Configuration hints (1):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+. (root)    .  Create knip.json configuration file, and add entry and/or refine project files (55 unused files)

@@ -5,7 +5,9 @@ import { auth } from "@clerk/nextjs/server";
 import { generateAIResponse, generateAIJSON } from "@/lib/ai/provider";
 import { redis } from "@/lib/redis";
 
-export const generateAIInsights = async (industry) => {
+export const generateAIInsights = async (industry, userId = null) => {
+  const { userId: authUserId } = await auth();
+  if (!authUserId) throw new Error("Unauthorized");
   if (!industry) throw new Error("Industry is required for insights");
 
   const prompt = `
@@ -34,7 +36,7 @@ export const generateAIInsights = async (industry) => {
   `;
 
   try {
-    const parsed = await generateAIJSON(prompt);
+    const parsed = await generateAIJSON(prompt, { userId, feature: "industry-insights" });
 
     // Normalize casing so UI never breaks
     return {
@@ -84,12 +86,44 @@ export async function getIndustryInsights() {
   if (user.industryInsight) {
     // Populate Redis asynchronously for next time
     redis.set(cacheKey, JSON.stringify(user.industryInsight), "EX", 3600).catch(console.error);
+
+    // Stale-While-Revalidate: Trigger background insights update if stale (nextUpdate is in the past)
+    const isStale = new Date() > new Date(user.industryInsight.nextUpdate);
+    if (isStale) {
+      console.log(`[Cache] Industry insights for "${user.industry}" are stale. Spawning background refresh...`);
+      (async () => {
+        try {
+          const freshInsights = await generateAIInsights(user.industry, user.id);
+          if (freshInsights && !freshInsights.error) {
+            const formattedInsights = {
+              ...freshInsights,
+              demandLevel: freshInsights.demandLevel.toUpperCase(),
+              marketOutlook: freshInsights.marketOutlook.toUpperCase(),
+            };
+            const updatedInsight = await db.industryInsight.update({
+              where: { industry: user.industry },
+              data: {
+                ...formattedInsights,
+                lastUpdated: new Date(),
+                nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
+              },
+            });
+            // Update Redis cache with fresh data
+            await redis.set(cacheKey, JSON.stringify(updatedInsight), "EX", 3600);
+            console.log(`[Cache] Successfully updated stale insights for "${user.industry}" in background.`);
+          }
+        } catch (err) {
+          console.error(`[Cache] Failed to refresh stale insights for "${user.industry}":`, err.message);
+        }
+      })();
+    }
+
     return user.industryInsight;
   }
 
   // --- If no insights exist, generate them ---
   // We now know for sure that user.industry has a value.
-  const insights = await generateAIInsights(user.industry);
+  const insights = await generateAIInsights(user.industry, user.id);
 
   // Prisma needs the enum types in uppercase, so we ensure that here.
   const formattedInsights = {

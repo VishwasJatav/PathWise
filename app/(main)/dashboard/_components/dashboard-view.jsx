@@ -6,7 +6,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const DashboardView = ({ insights }) => {
@@ -48,8 +48,8 @@ const DashboardView = ({ insights }) => {
   const nextUpdateDistance = formatDistanceToNow(new Date(insights.nextUpdate), { addSuffix: true });
 
   return (
-    <motion.div
-      className="space-y-6"
+    <m.div
+      className="gap-y-"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -64,7 +64,7 @@ const DashboardView = ({ insights }) => {
       {/* Top Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Market Outlook */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -72,17 +72,17 @@ const DashboardView = ({ insights }) => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-              <OutlookIcon className={`h-5 w-5 ${outlookColor}`} />
+              <OutlookIcon className={`size- ${outlookColor}`} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold capitalize">{insights.marketOutlook}</div>
               <p className="text-xs text-muted-foreground">Next update {nextUpdateDistance}</p>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Industry Growth */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -90,7 +90,7 @@ const DashboardView = ({ insights }) => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Industry Growth</CardTitle>
-              <TrendingUp className="h-5 w-5 text-muted-foreground" />
+              <TrendingUp className="size- text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{insights.growthRate.toFixed(1)}%</div>
@@ -100,10 +100,10 @@ const DashboardView = ({ insights }) => {
               />
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Demand Level */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -111,7 +111,7 @@ const DashboardView = ({ insights }) => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Demand Level</CardTitle>
-              <BriefcaseIcon className="h-5 w-5 text-muted-foreground" />
+              <BriefcaseIcon className="size- text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold capitalize">{insights.demandLevel}</div>
@@ -123,10 +123,10 @@ const DashboardView = ({ insights }) => {
               <p className="text-xs mt-1 text-muted-foreground">Current industry demand</p>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Top Skills */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
@@ -134,7 +134,7 @@ const DashboardView = ({ insights }) => {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Top Skills</CardTitle>
-              <Brain className="h-5 w-5 text-muted-foreground" />
+              <Brain className="size- text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -150,11 +150,11 @@ const DashboardView = ({ insights }) => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Salary Ranges Chart */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -165,7 +165,7 @@ const DashboardView = ({ insights }) => {
             <CardDescription>Displaying minimum, median, and maximum salaries (in thousands)</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[400px]">
+            <div className="h-[400px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={salaryData}>
                   <CartesianGrid stroke="#334155" strokeDasharray="3 3" />
@@ -196,50 +196,50 @@ const DashboardView = ({ insights }) => {
             </div>
           </CardContent>
         </Card>
-      </motion.div>
+      </m.div>
 
       {/* Industry Trends & Recommended Skills */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {/* Industry Trends */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <Card>
-            <CardHeader className="flex items-center space-x-2 pb-2">
-              <LineChart className="h-5 w-5 text-muted-foreground" />
+            <CardHeader className="flex items-center gap-x- pb-2">
+              <LineChart className="size- text-muted-foreground" />
               <CardTitle className="text-sm font-medium">Key Industry Trends</CardTitle>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-3">
+              <ul className="gap-y-">
                 {insights.keyTrends.map((trend, index) => (
-                  <li key={index} className="flex items-center space-x-2">
-                    <div className="h-3 w-3 rounded-full bg-indigo-500 animate-pulse" />
+                  <li key={trend} className="flex items-center gap-x-">
+                    <div className="size- rounded-full bg-indigo-500 animate-pulse" />
                     <span className="text-sm">{trend}</span>
                   </li>
                 ))}
               </ul>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Recommended Skills */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <Card>
-            <CardHeader className="flex items-center space-x-2 pb-2">
-              <Brain className="h-5 w-5 text-muted-foreground" />
+            <CardHeader className="flex items-center gap-x- pb-2">
+              <Brain className="size- text-muted-foreground" />
               <CardTitle className="text-sm font-medium">Recommended Skills</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {insights.recommendedSkills.map((skill, index) => (
                   <Badge
-                    key={index}
+                    key={skill}
                     variant="secondary"
                     className="px-3 py-1 text-xs rounded-full hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all"
                   >
@@ -249,20 +249,20 @@ const DashboardView = ({ insights }) => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
 
       {/* Futuristic Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {/* Next Decade Outlook */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
         >
           <Card className="h-full">
-            <CardHeader className="flex items-center space-x-2 pb-2">
-              <TrendingUp className="h-5 w-5 text-muted-foreground" />
+            <CardHeader className="flex items-center gap-x- pb-2">
+              <TrendingUp className="size- text-muted-foreground" />
               <CardTitle className="text-sm font-medium">10-Year Industry Outlook</CardTitle>
             </CardHeader>
             <CardContent>
@@ -271,17 +271,17 @@ const DashboardView = ({ insights }) => {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
 
         {/* Emerging Technologies */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8 }}
         >
           <Card className="h-full">
-            <CardHeader className="flex items-center space-x-2 pb-2">
-              <Brain className="h-5 w-5 text-muted-foreground" />
+            <CardHeader className="flex items-center gap-x- pb-2">
+              <Brain className="size- text-muted-foreground" />
               <CardTitle className="text-sm font-medium">Emerging Technologies</CardTitle>
             </CardHeader>
             <CardContent>
@@ -289,7 +289,7 @@ const DashboardView = ({ insights }) => {
                 {insights.emergingTechnologies?.length > 0 ? (
                   insights.emergingTechnologies.map((tech, index) => (
                     <Badge
-                      key={index}
+                      key={tech}
                       variant="outline"
                       className="px-3 py-1 text-xs rounded-full border-indigo-500/30 text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 transition-all"
                     >
@@ -302,9 +302,9 @@ const DashboardView = ({ insights }) => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
-    </motion.div>
+    </m.div>
   );
 };
 

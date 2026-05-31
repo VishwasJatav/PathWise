@@ -1,0 +1,71 @@
+# production-safe template using Docker Secrets
+# Usage: docker compose -f docker-compose.prod.yml up -d
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    secrets:
+      - db_url
+      - redis_url
+      - gemini_api_key
+      - clerk_secret_key
+    environment:
+      NODE_ENV: production
+      DATABASE_URL_FILE: /run/secrets/db_url
+      REDIS_URL_FILE: /run/secrets/redis_url
+      GEMINI_API_KEY_FILE: /run/secrets/gemini_api_key
+      CLERK_SECRET_KEY_FILE: /run/secrets/clerk_secret_key
+      OLLAMA_URL: http://ollama:11434
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+
+  db:
+    image: postgres:16-alpine
+    secrets:
+      - db_password
+    environment:
+      POSTGRES_USER: rixora
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB: rixora
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U rixora" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+secrets:
+  db_url:
+    external: true
+  redis_url:
+    external: true
+  gemini_api_key:
+    external: true
+  clerk_secret_key:
+    external: true
+  db_password:
+    external: true
+
+volumes:
+  pgdata:

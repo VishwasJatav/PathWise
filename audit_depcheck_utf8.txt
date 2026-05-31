@@ -1,0 +1,9 @@
+Unused dependencies
+* @radix-ui/react-dialog
+* chart.js
+* react-chartjs-2
+Unused devDependencies
+* autoprefixer
+* eslint-config-next
+* postcss
+* tw-animate-css

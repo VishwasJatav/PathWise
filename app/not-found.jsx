@@ -21,7 +21,7 @@ export default function NotFound() {
 
       {/* Action */}
       <Link href="/" passHref>
-        <Button className="rounded-xl px-6 py-2 text-lg shadow-lg hover:scale-105 transition-transform duration-200">
+        <Button type="button" className="rounded-xl px-6 py-2 text-lg shadow-lg hover:scale-105 transition-transform duration-200">
           Go Back Home
         </Button>
       </Link>

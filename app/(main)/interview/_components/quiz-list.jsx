@@ -55,13 +55,13 @@ export default function QuizList({ initialAssessments = [], initialNextCursor = 
                 Review your past quiz performance
               </CardDescription>
             </div>
-            <Button onClick={() => router.push("/interview/mock")}>
+            <Button type="button" onClick={() => router.push("/interview/mock")}>
               Start New Quiz
             </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
+          <div className="gap-y-">
             {assessments?.map((assessment, i) => (
               <Card
                 key={assessment.id}
@@ -95,8 +95,8 @@ export default function QuizList({ initialAssessments = [], initialNextCursor = 
 
           {nextCursor && (
             <div className="flex justify-center mt-6 pt-4 border-t">
-              <Button onClick={loadMore} disabled={isLoading} variant="outline" className="w-full sm:w-auto">
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="button" onClick={loadMore} disabled={isLoading} variant="outline" className="w-full sm:w-auto">
+                {isLoading && <Loader2 className="mr-2 size- animate-spin" />}
                 Load More Quizzes
               </Button>
             </div>

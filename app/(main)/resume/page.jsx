@@ -2,6 +2,12 @@ import { getResume } from '@/actions/resume'
 import React from 'react'
 import ResumeBuilder from './_components/resume-builder-v2';
 
+
+export const metadata = {
+  title: 'AI Resume Builder | Rixora',
+  description: 'Create ATS-optimized resumes with AI assistance. Choose from premium templates and generate content instantly.',
+};
+
 const ResumePage = async () => {
   const resume = await getResume();
 
@@ -23,3 +29,4 @@ const ResumePage = async () => {
 };
 
 export default ResumePage;
+

@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { generateAIResponse } from "@/lib/ai/provider";
+import { generateAIResponse, generateAIJSON } from "@/lib/ai/provider";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -104,7 +104,7 @@ export async function improveWithAI({ current, type }) {
   `;
 
   try {
-    const result = await generateAIResponse(prompt);
+    const result = await generateAIResponse(prompt, { userId: user.id, feature: "resume-improve" });
     const response = result.response;
     const improvedContent = response.text().trim();
     return improvedContent;
@@ -135,7 +135,7 @@ export async function getAtsScore({ content, jobDescription }) {
   `;
 
   try {
-    const parsed = await generateAIJSON(prompt);
+    const parsed = await generateAIJSON(prompt, { userId: user.id, feature: "resume-ats" });
 
     // Normalize casing so UI never breaks
     return {

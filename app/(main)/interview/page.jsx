@@ -4,6 +4,12 @@ import PerformanceChart from "./_components/performance-chart";
 import StatsCards from "./_components/stats-cards";
 import QuizList from "./_components/quiz-list";
 
+
+export const metadata = {
+  title: 'Mock Interview Prep | Rixora',
+  description: 'Prepare for your interviews with AI-generated questions and feedback.',
+};
+
 export default async function InterviewPrepPage() {
   const { assessments, nextCursor } = await getAssessments();
 
@@ -14,7 +20,7 @@ export default async function InterviewPrepPage() {
           Interview Preparation
         </h1>
       </div>
-      <div className="space-y-6">
+      <div className="gap-y-">
         <div className="animate-fade-in-up stagger-1">
           <StatsCards assessments={assessments} />
         </div>
@@ -27,4 +33,5 @@ export default async function InterviewPrepPage() {
       </div>
     </div>
   );
-}
+}
+

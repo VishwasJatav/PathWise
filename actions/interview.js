@@ -71,7 +71,7 @@ export async function generateQuiz() {
   `;
 
   try {
-    const quiz = await generateAIJSON(prompt);
+    const quiz = await generateAIJSON(prompt, { userId: user.id, feature: "interview-quiz" });
     if (!quiz || !quiz.questions) throw new Error("Invalid response format from AI");
     return quiz.questions;
   } catch (error) {
@@ -120,7 +120,7 @@ export async function saveQuizResult(questions, answers, score) {
     `;
 
     try {
-      const tipResult = await generateAIResponse(improvementPrompt);
+      const tipResult = await generateAIResponse(improvementPrompt, { userId: user.id, feature: "interview-tip" });
       improvementTip = tipResult.response.text().trim();
     } catch (error) {
       console.error("Error generating improvement tip:", error);

@@ -28,6 +28,7 @@ model User {
   assessments   Assessment[]
   resume        Resume?
   coverLetter   CoverLetter[]
+  apiUsages     ApiUsage[]
 }
 
 model Assessment {
@@ -111,4 +112,20 @@ enum MarketOutlook {
   POSITIVE
   NEUTRAL
   NEGATIVE
+}
+
+model ApiUsage {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feature          String
+  model            String   @default("gemini-2.5-flash")
+  promptTokens     Int      @default(0)
+  completionTokens Int      @default(0)
+  totalTokens      Int      @default(0)
+  createdAt        DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, createdAt])
+  @@index([feature])
 }

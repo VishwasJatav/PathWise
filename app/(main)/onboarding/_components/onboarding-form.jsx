@@ -81,7 +81,7 @@ const OnboardingForm = ({ industries }) => {
   return (
     <div className="flex items-center justify-center bg-background min-h-[calc(100vh-140px)]">
       <Card className="w-full max-w-lg mx-4 sm:mx-0 my-10 shadow-lg border-primary/20 bg-card rounded-2xl form-border-animation">
-        <CardHeader className="space-y-3">
+        <CardHeader className="gap-y-">
           <CardTitle className="gradient-title text-4xl text-center">
             Complete Your Profile
           </CardTitle>
@@ -91,15 +91,14 @@ const OnboardingForm = ({ industries }) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="gap-y-">
             {/* Industry */}
-            <div className="space-y-2">
+            <div className="gap-y-">
               <Label htmlFor="industry">Industry</Label>
               <Popover open={openIndustry} onOpenChange={setOpenIndustry}>
                 <PopoverTrigger asChild>
-                  <Button
+                  <Button type="button"
                     variant="outline"
-                    role="combobox"
                     aria-expanded={openIndustry}
                     className="w-full justify-between border-input text-left font-normal"
                   >
@@ -108,7 +107,7 @@ const OnboardingForm = ({ industries }) => {
                         ? industries.find((ind) => ind.id === watchIndustry)?.name
                         : "Search and select an industry..."}
                     </span>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="ml-2 size- shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -136,7 +135,7 @@ const OnboardingForm = ({ industries }) => {
                           >
                             <Check
                               className={cn(
-                                "mr-2 h-4 w-4",
+                                "mr-2 size-",
                                 watchIndustry === ind.id ? "opacity-100" : "opacity-0"
                               )}
                             />
@@ -155,13 +154,12 @@ const OnboardingForm = ({ industries }) => {
 
             {/* Sub-Industry */}
             {watchIndustry && selectedIndustry && (
-              <div className="space-y-2 animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="gap-y- animate-in fade-in slide-in-from-top-4 duration-300">
                 <Label htmlFor="subIndustry">Specialization</Label>
                 <Popover open={openSubIndustry} onOpenChange={setOpenSubIndustry}>
                   <PopoverTrigger asChild>
-                    <Button
+                    <Button type="button"
                       variant="outline"
-                      role="combobox"
                       aria-expanded={openSubIndustry}
                       className="w-full justify-between border-input text-left font-normal"
                     >
@@ -170,7 +168,7 @@ const OnboardingForm = ({ industries }) => {
                           ? watchSubIndustry
                           : "Search your specialization..."}
                       </span>
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronsUpDown className="ml-2 size- shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
@@ -196,7 +194,7 @@ const OnboardingForm = ({ industries }) => {
                             >
                               <Check
                                 className={cn(
-                                  "mr-2 h-4 w-4",
+                                  "mr-2 size-",
                                   watchSubIndustry === sub ? "opacity-100" : "opacity-0"
                                 )}
                               />
@@ -215,7 +213,7 @@ const OnboardingForm = ({ industries }) => {
             )}
 
             {/* Years of Experience */}
-            <div className="space-y-2">
+            <div className="gap-y-">
               <Label htmlFor="experience">Years of Experience</Label>
               <Input
                 id="experience"
@@ -232,7 +230,7 @@ const OnboardingForm = ({ industries }) => {
             </div>
 
             {/* Skills */}
-            <div className="space-y-2">
+            <div className="gap-y-">
               <Label htmlFor="skills">Key Skills</Label>
               <Input
                 id="skills"
@@ -249,7 +247,7 @@ const OnboardingForm = ({ industries }) => {
             </div>
 
             {/* Professional Bio */}
-            <div className="space-y-2">
+            <div className="gap-y-">
               <Label htmlFor="bio">Professional Bio</Label>
               <Textarea
                 id="bio"
@@ -266,8 +264,8 @@ const OnboardingForm = ({ industries }) => {
             <Button type="submit" className="w-full font-medium" disabled={updateLoading}>
               {updateLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Translating profile...
+                  <Loader2 className="mr-2 size- animate-spin" />
+                  Translating profile…
                 </>
               ) : (
                 "Complete Profile"

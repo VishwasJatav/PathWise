@@ -4,13 +4,58 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIcon } from "lucide-react";
+import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIcon, Activity, BarChart2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+
+function RixoraLogo({ className = "" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 200 48"
+      className={className}
+      style={{ height: '36px', width: 'auto' }}
+      role="img"
+      aria-label="Rixora — AI Career and Study Hub"
+    >
+      <defs>
+        <linearGradient id="hGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#7C3AED"/>
+          <stop offset="100%" stopColor="#4F46E5"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="2" width="40" height="40" rx="9" fill="url(#hGrad)"/>
+      <path
+        d="M9 11 L9 33 M9 11 L25 11 Q31 11 31 17 Q31 23 25 23 L9 23 M19 23 L31 33"
+        stroke="#ffffff"
+        strokeWidth="3.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      <text
+        x="48" y="27"
+        fontFamily="Inter,system-ui,sans-serif"
+        fontSize="22"
+        fontWeight="800"
+        fill="#7C3AED"
+        letterSpacing="-0.5"
+      >Rix</text>
+      <text
+        x="86" y="27"
+        fontFamily="Inter,system-ui,sans-serif"
+        fontSize="22"
+        fontWeight="300"
+        fill="#4F46E5"
+        letterSpacing="-0.5"
+      >ora</text>
+    </svg>
+  );
+}
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -32,22 +77,19 @@ const Header = () => {
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="group">
-          <h1 className="text-3xl font-extrabold italic tracking-wide transition-transform group-hover:scale-105">
-            <span className="text-foreground">PATH</span>
-            <span className="text-sky-500">WISE</span>
-          </h1>
+          <RixoraLogo className="transition-transform group-hover:scale-105" />
         </Link>
 
         {/* Right side buttons */}
-        <div className="flex items-center space-x-2 md:space-x-4">
+        <div className="flex items-center gap-x- md:gap-x-">
           <SignedIn>
-            <Button
+            <Button type="button"
               asChild
               variant="outline"
               className="items-center gap-2"
             >
               <Link href="/dashboard">
-                <LayoutDashboard className="h-4 w-4" />
+                <LayoutDashboard className="size-" />
                 <span className="hidden md:block">Industry Insights</span>
               </Link>
             </Button>
@@ -55,16 +97,16 @@ const Header = () => {
             {/* Growth Tools Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="flex items-center gap-2">
-                  <StarsIcon className="h-4 w-4" />
+                <Button type="button" className="flex items-center gap-2">
+                  <StarsIcon className="size-" />
                   <span className="hidden md:block">Growth Tools</span>
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="size-" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem asChild>
                   <Link href="/resume" className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
+                    <FileText className="size-" />
                     Build Resume
                   </Link>
                 </DropdownMenuItem>
@@ -73,14 +115,20 @@ const Header = () => {
                     href="/ai-cover-letter"
                     className="flex items-center gap-2"
                   >
-                    <PenBox className="h-4 w-4" />
+                    <PenBox className="size-" />
                     Cover Letter
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/interview" className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4" />
+                    <GraduationCap className="size-" />
                     Interview Prep
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/api-usage" className="flex items-center gap-2">
+                    <BarChart2 className="size-" />
+                    API Usage
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -88,8 +136,8 @@ const Header = () => {
           </SignedIn>
 
           <SignedOut>
-            <SignInButton>
-              <Button variant="outline">Sign In</Button>
+            <SignInButton mode="modal" asChild>
+              <Button type="button" variant="outline">Sign In</Button>
             </SignInButton>
           </SignedOut>
 
@@ -97,7 +145,7 @@ const Header = () => {
             <UserButton
               appearance={{
                 elements: {
-                  avatarBox: "w-10 h-10",
+                  avatarBox: "size-",
                   userButtonPopoverCard: "shadow-xl",
                   userPreviewMainIdentifier: "font-semibold",
                 },
