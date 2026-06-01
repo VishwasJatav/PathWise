@@ -65,88 +65,84 @@ export default function CoverLetterGenerator() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.4 }}
-        className="gap-y-"
+        className="w-full max-w-4xl mx-auto"
       >
-        <m.div whileHover={{ scale: 1.02 }} transition={{ type: "spring", stiffness: 300 }}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Job Details</CardTitle>
-              <CardDescription>
-                Provide information about the position you're applying for
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="gap-y-">
-              <div className="grid grid-cols-2 gap-4">
-                <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
-                  <Label htmlFor="companyName">Company Name</Label>
+        <Card className="border-white/10 bg-background/50 backdrop-blur-xl shadow-2xl overflow-hidden">
+          <CardHeader className="border-b border-white/5 pb-6">
+            <CardTitle className="text-3xl text-white">Job Details</CardTitle>
+            <CardDescription className="text-slate-400 text-base">
+              Provide information about the position you're applying for
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <m.div whileFocus={{ scale: 1.01 }} className="space-y-2 relative group">
+                  <Label htmlFor="companyName" className="text-slate-300">Company Name</Label>
                   <Input
                     id="companyName"
                     placeholder="Enter company name"
+                    className="bg-slate-900/50 border-white/10 text-white focus:border-blue-500 transition-colors"
                     {...register("companyName")}
                   />
                   {errors.companyName && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-red-500 absolute -bottom-5">
                       {errors.companyName.message}
                     </p>
                   )}
                 </m.div>
 
-                <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
-                  <Label htmlFor="jobTitle">Job Title</Label>
+                <m.div whileFocus={{ scale: 1.01 }} className="space-y-2 relative group">
+                  <Label htmlFor="jobTitle" className="text-slate-300">Job Title</Label>
                   <Input
                     id="jobTitle"
                     placeholder="Enter job title"
+                    className="bg-slate-900/50 border-white/10 text-white focus:border-blue-500 transition-colors"
                     {...register("jobTitle")}
                   />
                   {errors.jobTitle && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-red-500 absolute -bottom-5">
                       {errors.jobTitle.message}
                     </p>
                   )}
                 </m.div>
               </div>
 
-              <m.div whileFocus={{ scale: 1.02 }} className="gap-y-">
-                <Label htmlFor="jobDescription">Job Description</Label>
+              <m.div whileFocus={{ scale: 1.01 }} className="space-y-2 relative group pt-2">
+                <Label htmlFor="jobDescription" className="text-slate-300">Job Description</Label>
                 <Textarea
                   id="jobDescription"
                   placeholder="Paste the job description here"
-                  className="h-32"
+                  className="h-40 bg-slate-900/50 border-white/10 text-white focus:border-blue-500 transition-colors resize-none"
                   {...register("jobDescription")}
                 />
                 {errors.jobDescription && (
-                  <p className="text-sm text-red-500">
+                  <p className="text-sm text-red-500 absolute -bottom-5">
                     {errors.jobDescription.message}
                   </p>
                 )}
               </m.div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-end pt-4">
                 <Button
                   type="submit"
                   disabled={generating}
-                  asChild
+                  size="lg"
+                  className="bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] transition-all font-semibold"
                 >
-                  <m.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                  >
-                    {generating ? (
-                      <>
-                        <Loader2 className="mr-2 size- animate-spin" />
-                        Generating…
-                      </>
-                    ) : (
-                      "Generate Cover Letter"
-                    )}
-                  </m.button>
+                  {generating ? (
+                    <>
+                      <Loader2 className="mr-2 size-5 animate-spin" />
+                      Generating Cover Letter...
+                    </>
+                  ) : (
+                    "Generate Cover Letter"
+                  )}
                 </Button>
               </div>
             </form>
           </CardContent>
         </Card>
-        </m.div>
       </m.div>
     </AnimatePresence>
   );

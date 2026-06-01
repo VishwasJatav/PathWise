@@ -9,8 +9,13 @@ export async function getApiUsageSummary() {
   if (!userId) redirect("/sign-in");
 
   try {
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) return { totalTokens: 0, thisMonthTokens: 0, todayTokens: 0, totalCalls: 0, mostUsedFeature: "None" };
+
     const usages = await db.apiUsage.findMany({
-      where: { userId },
+      where: { userId: user.id },
     });
 
     const now = new Date();
@@ -64,13 +69,18 @@ export async function getDailyUsage() {
   if (!userId) return [];
 
   try {
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) return [];
+
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     thirtyDaysAgo.setHours(0, 0, 0, 0);
 
     const usages = await db.apiUsage.findMany({
       where: { 
-        userId,
+        userId: user.id,
         createdAt: { gte: thirtyDaysAgo }
       },
     });
@@ -108,8 +118,13 @@ export async function getFeatureBreakdown() {
   if (!userId) return [];
 
   try {
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) return [];
+
     const usages = await db.apiUsage.findMany({
-      where: { userId },
+      where: { userId: user.id },
     });
 
     const featureMap = {};
@@ -147,8 +162,13 @@ export async function getRecentCalls() {
   if (!userId) return [];
 
   try {
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+    if (!user) return [];
+
     const usages = await db.apiUsage.findMany({
-      where: { userId },
+      where: { userId: user.id },
       orderBy: { createdAt: "desc" },
       take: 20,
     });

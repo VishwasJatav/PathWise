@@ -32,7 +32,7 @@ const ClassicTemplate = ({ data }) => {
                     <h2 className="text-lg font-bold border-b border-gray-300 mb-2 uppercase tracking-wide">Work Experience</h2>
                     <div className="gap-y-">
                         {data.experience.map((exp, index) => (
-                            <div key={exp.title}>
+                            <div key={exp.id || `exp-${exp.title || 'empty'}-${index}`}>
                                 <div className="flex justify-between font-bold text-sm">
                                     <span>{exp.title} | {exp.organization}</span>
                                     <span>{exp.startDate} - {exp.current ? "Present" : exp.endDate}</span>
@@ -57,9 +57,9 @@ const ClassicTemplate = ({ data }) => {
             {data.education?.length > 0 && (
                 <section className="mb-6">
                     <h2 className="text-lg font-bold border-b border-gray-300 mb-2 uppercase tracking-wide">Education</h2>
-                    <div className="gap-y-">
+                    <div className="gap-y-4">
                         {data.education.map((edu, index) => (
-                            <div key={edu.degree}>
+                            <div key={edu.id || `edu-${edu.degree || 'empty'}-${index}`}>
                                 <div className="flex justify-between font-bold text-sm">
                                     <span>{edu.degree} | {edu.organization}</span>
                                     <span>{edu.startDate} - {edu.endDate}</span>
@@ -99,7 +99,7 @@ const ModernTemplate = ({ data }) => {
                             <h2 className="text-xl font-bold text-slate-900 border-l-4 border-slate-800 pl-3 mb-3 uppercase tracking-wider">Experience</h2>
                             <div className="gap-y-">
                                 {data.experience?.map((exp, i) => (
-                                    <div key={exp.title} className="relative pl-2">
+                                    <div key={exp.id || `exp-${exp.title || 'empty'}-${i}`} className="relative pl-2">
                                         <div className="flex justify-between items-baseline">
                                             <h3 className="font-bold text-slate-900">{exp.title}</h3>
                                             <span className="text-xs font-semibold bg-slate-100 px-2 py-1 rounded text-slate-600">
@@ -151,7 +151,7 @@ const ModernTemplate = ({ data }) => {
                         <h2 className="text-lg font-bold text-slate-900 border-b-2 border-slate-800 pb-1 mb-3 uppercase tracking-wider">Education</h2>
                         <div className="gap-y-">
                             {data.education?.map((edu, i) => (
-                                <div key={edu.degree}>
+                                <div key={edu.id || `edu-${edu.degree || 'empty'}-${i}`}>
                                     <h3 className="font-bold text-slate-900 text-sm leading-tight">{edu.organization}</h3>
                                     <p className="text-xs text-slate-600 font-medium">{edu.degree}</p>
                                     <p className="text-[10px] text-slate-500 mt-1">{edu.startDate} - {edu.endDate}</p>
@@ -187,7 +187,7 @@ const MinimalTemplate = ({ data }) => {
                     <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-4 text-gray-400">Experience</h2>
                     <div className="gap-y-">
                         {data.experience?.map((exp, i) => (
-                            <div key={exp.title}>
+                            <div key={exp.id || `exp-${exp.title || 'empty'}-${i}`}>
                                 <div className="flex justify-between items-baseline mb-1">
                                     <h3 className="text-sm font-black uppercase tracking-tight">{exp.title}</h3>
                                     <span className="text-[10px] font-bold text-gray-400">{exp.startDate} — {exp.current ? "NOW" : exp.endDate}</span>
@@ -205,7 +205,7 @@ const MinimalTemplate = ({ data }) => {
                         <h2 className="text-xs font-black uppercase tracking-[0.2em] mb-4 text-gray-400">Education</h2>
                         <div className="gap-y-">
                             {data.education?.map((edu, i) => (
-                                <div key={edu.degree}>
+                                <div key={edu.id || `edu-${edu.degree || 'empty'}-${i}`}>
                                     <h3 className="text-xs font-black uppercase">{edu.organization}</h3>
                                     <p className="text-[10px] text-gray-500 font-bold mt-1">{edu.degree}</p>
                                 </div>
@@ -261,7 +261,7 @@ const CreativeTemplate = ({ data }) => {
                         <h2 className="text-purple-600 mb-4 border-b pb-1">Education</h2>
                         <div className="gap-y- normal-case tracking-normal">
                             {data.education?.map((edu, i) => (
-                                <div key={edu.degree}>
+                                <div key={edu.id || `edu-${edu.degree || 'empty'}-${i}`}>
                                     <p className="text-xs font-bold text-gray-800">{edu.organization}</p>
                                     <p className="text-[10px] text-gray-500">{edu.degree}</p>
                                 </div>
@@ -287,7 +287,7 @@ const CreativeTemplate = ({ data }) => {
                         </h2>
                         <div className="gap-y- border-l-2 border-gray-100 ml-1 pl-6">
                             {data.experience?.map((exp, i) => (
-                                <div key={exp.title} className="relative">
+                                <div key={exp.id || `exp-${exp.title || 'empty'}-${i}`} className="relative">
                                     <div className="absolute left-[-31px] top-[6px] size- rounded-full bg-white border-2 border-purple-600" />
                                     <h3 className="font-bold text-gray-900 text-sm">{exp.title}</h3>
                                     <div className="flex justify-between items-center text-xs text-purple-600 font-bold mb-2">

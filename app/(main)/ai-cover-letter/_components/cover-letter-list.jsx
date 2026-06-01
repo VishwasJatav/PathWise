@@ -41,11 +41,11 @@ export default function CoverLetterList({ coverLetters }) {
 
   if (!coverLetters?.length) {
     return (
-      <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-        <Card>
+      <m.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
+        <Card className="border-white/5 bg-background/50 backdrop-blur-md shadow-xl">
           <CardHeader>
-            <CardTitle>No Cover Letters Yet</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-2xl text-white">No Cover Letters Yet</CardTitle>
+            <CardDescription className="text-slate-400">
               Create your first cover letter to get started
             </CardDescription>
           </CardHeader>
@@ -55,58 +55,61 @@ export default function CoverLetterList({ coverLetters }) {
   }
 
   return (
-    <div className="gap-y-">
+    <div className="space-y-4">
       <AnimatePresence>
         {coverLetters.map((letter) => (
           <m.div
             key={letter.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.4 }}
           >
-            <Card className="group relative hover:shadow-lg transition-shadow">
+            <Card className="group relative border border-white/5 bg-slate-900/40 hover:bg-slate-800/60 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.15)] hover:-translate-y-1 backdrop-blur-md overflow-hidden">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div>
-                    <CardTitle className="text-xl gradient-title">
-                      {letter.jobTitle} at {letter.companyName}
+                    <CardTitle className="text-2xl gradient-title mb-1">
+                      {letter.jobTitle} <span className="text-slate-400 font-medium text-lg">at</span> {letter.companyName}
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-slate-400">
                       Created {format(new Date(letter.createdAt), "PPP")}
                     </CardDescription>
                   </div>
-                  <div className="flex gap-x-">
+                  <div className="flex gap-x-2">
                     {/* Wrap Eye button in motion.div for hover effect */}
-                    <m.div whileHover={{ scale: 1.05 }}>
+                    <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Button type="button"
                         variant="outline"
                         size="icon"
+                        className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 hover:text-blue-300 transition-colors"
                         onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}
                       >
-                        <Eye className="size-" />
+                        <Eye className="size-4" />
                       </Button>
                     </m.div>
 
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        <Button type="button" variant="outline" size="icon">
-                          <Trash2 className="size-" />
-                        </Button>
+                        <m.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button type="button" variant="outline" size="icon" className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors">
+                            <Trash2 className="size-4" />
+                          </Button>
+                        </m.div>
                       </AlertDialogTrigger>
-                      <AlertDialogContent>
+                      <AlertDialogContent className="bg-black/90 backdrop-blur-xl border-white/10 shadow-2xl">
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Cover Letter?</AlertDialogTitle>
-                          <AlertDialogDescription>
+                          <AlertDialogTitle className="text-white text-xl">Delete Cover Letter?</AlertDialogTitle>
+                          <AlertDialogDescription className="text-slate-400">
                             This action cannot be undone. This will permanently
-                            delete your cover letter for {letter.jobTitle} at {letter.companyName}.
+                            delete your cover letter for <span className="font-bold text-white">{letter.jobTitle}</span> at <span className="font-bold text-white">{letter.companyName}</span>.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel className="border-white/10 text-slate-300 hover:bg-white/5 hover:text-white">Cancel</AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => handleDelete(letter.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            className="bg-red-600 text-white hover:bg-red-500 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all"
                           >
                             Delete
                           </AlertDialogAction>
@@ -117,7 +120,7 @@ export default function CoverLetterList({ coverLetters }) {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-muted-foreground text-sm line-clamp-3">
+                <div className="text-slate-300/80 text-sm line-clamp-3 leading-relaxed bg-black/20 p-4 rounded-xl border border-white/5">
                   {letter.jobDescription}
                 </div>
               </CardContent>

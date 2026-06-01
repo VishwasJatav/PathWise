@@ -161,7 +161,7 @@ export const ResumeEditor = () => {
                                         disabled={isImprovingSummary || !watch("summary")}
                                     >
                                         {isImprovingSummary ? (
-                                            <Button type="button"Loader className="mr-2" />
+                                            <ButtonLoader className="mr-2" />
                                         ) : (
                                             <Sparkles className="size- mr-2" />
                                         )}

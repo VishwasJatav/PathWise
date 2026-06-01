@@ -20,6 +20,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import QuizResult from "./quiz-result";
+import { m } from "framer-motion";
 
 export default function QuizList({ initialAssessments = [], initialNextCursor = null }) {
   const router = useRouter();
@@ -42,72 +43,99 @@ export default function QuizList({ initialAssessments = [], initialNextCursor = 
     }
   };
 
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
+
   return (
     <>
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="gradient-title text-3xl md:text-4xl">
-                Recent Quizzes
-              </CardTitle>
-              <CardDescription>
-                Review your past quiz performance
-              </CardDescription>
-            </div>
-            <Button type="button" onClick={() => router.push("/interview/mock")}>
-              Start New Quiz
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="gap-y-">
-            {assessments?.map((assessment, i) => (
-              <Card
-                key={assessment.id}
-                className="cursor-pointer hover:bg-muted/50 transition-colors"
-                onClick={() => setSelectedQuiz(assessment)}
-              >
-                <CardHeader>
-                  <CardTitle className="gradient-title text-2xl">
-                    Quiz {i + 1}
-                  </CardTitle>
-                  <CardDescription className="flex justify-between w-full">
-                    <div>Score: {assessment.quizScore.toFixed(1)}%</div>
-                    <div>
-                      {format(
-                        new Date(assessment.createdAt),
-                        "MMMM dd, yyyy HH:mm"
-                      )}
-                    </div>
-                  </CardDescription>
-                </CardHeader>
-                {assessment.improvementTip && (
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {assessment.improvementTip}
-                    </p>
-                  </CardContent>
-                )}
-              </Card>
-            ))}
-          </div>
-
-          {nextCursor && (
-            <div className="flex justify-center mt-6 pt-4 border-t">
-              <Button type="button" onClick={loadMore} disabled={isLoading} variant="outline" className="w-full sm:w-auto">
-                {isLoading && <Loader2 className="mr-2 size- animate-spin" />}
-                Load More Quizzes
+      <m.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <Card className="border-white/5 bg-background/50 backdrop-blur-md">
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <CardTitle className="gradient-title text-3xl md:text-4xl">
+                  Recent Quizzes
+                </CardTitle>
+                <CardDescription className="text-slate-400">
+                  Review your past quiz performance
+                </CardDescription>
+              </div>
+              <Button type="button" onClick={() => router.push("/interview/mock")}>
+                Start New Quiz
               </Button>
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            <m.div 
+              className="space-y-4"
+              variants={listVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {assessments?.map((assessment, i) => (
+                <m.div key={assessment.id} variants={itemVariants}>
+                  <Card
+                    className="cursor-pointer border border-white/5 bg-slate-900/40 hover:bg-slate-800/60 transition-all duration-300 hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] hover:-translate-y-1"
+                    onClick={() => setSelectedQuiz(assessment)}
+                  >
+                    <CardHeader>
+                      <CardTitle className="gradient-title text-2xl">
+                        Quiz {i + 1}
+                      </CardTitle>
+                      <CardDescription className="flex justify-between w-full text-slate-400">
+                        <div>Score: <span className="font-bold text-white">{assessment.quizScore.toFixed(1)}%</span></div>
+                        <div>
+                          {format(
+                            new Date(assessment.createdAt),
+                            "MMMM dd, yyyy HH:mm"
+                          )}
+                        </div>
+                      </CardDescription>
+                    </CardHeader>
+                    {assessment.improvementTip && (
+                      <CardContent>
+                        <p className="text-sm text-slate-300">
+                          {assessment.improvementTip}
+                        </p>
+                      </CardContent>
+                    )}
+                  </Card>
+                </m.div>
+              ))}
+            </m.div>
+
+            {nextCursor && (
+              <div className="flex justify-center mt-6 pt-4 border-t border-white/10">
+                <Button type="button" onClick={loadMore} disabled={isLoading} variant="outline" className="w-full sm:w-auto border-white/10 hover:bg-white/5">
+                  {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
+                  Load More Quizzes
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </m.div>
 
       <Dialog open={!!selectedQuiz} onOpenChange={() => setSelectedQuiz(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black/80 backdrop-blur-2xl border-white/10 shadow-2xl">
           <DialogHeader>
-            <DialogTitle></DialogTitle>
+            <DialogTitle className="sr-only">Quiz Result</DialogTitle>
           </DialogHeader>
           <QuizResult
             result={selectedQuiz}

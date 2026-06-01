@@ -228,3 +228,253 @@ body {
 /* Rixora Dark Mode Logo Colors */
 .dark svg text[fill="#7C3AED"] { fill: #A78BFA; }
 .dark svg text[fill="#4F46E5"] { fill: #818CF8; }
+
+/* Custom Dark Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f1f2e;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a3e;
+}
+
+/* ── Dashboard card utilities ───────────────────────── */
+.dashboard-card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease,
+              border-color 0.25s ease;
+}
+.dashboard-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Stat card accent borders — use primary blue */
+.card-accent-positive { border-left: 2px solid hsl(142 71% 45%); }
+.card-accent-neutral  { border-left: 2px solid hsl(45 93% 47%);  }
+.card-accent-negative { border-left: 2px solid hsl(0 72% 51%);   }
+
+/* Animated progress bar fill */
+@keyframes progressFill {
+  from { width: 0%; }
+}
+.progress-animated {
+  animation: progressFill 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+/* Trend dot pulse */
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(0.85); }
+}
+.trend-dot-pulse {
+  animation: dotPulse 2.5s ease-in-out infinite;
+}
+
+/* Skill badge hover lift */
+.skill-badge-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: default;
+}
+.skill-badge-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+/* Count-up number */
+.count-up {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Industry Insights Pattern Background */
+.insights-pattern-bg-container {
+  --s: 75px;
+
+  --tree-color: #228b22;
+  --ornament-color: #ff0000;
+  --snowflake-color: #ffffff;
+  --background-color: #000000;
+
+  --_c: var(--tree-color), var(--background-color) 1deg 79deg,
+    var(--background-color) 81deg;
+
+  --g0: conic-gradient(from 140deg at 50% 87.5%, var(--_c));
+  --g1: conic-gradient(from 140deg at 50% 81.25%, var(--_c));
+  --g2: conic-gradient(from 140deg at 50% 75%, var(--_c));
+
+  --g3: conic-gradient(at 10% 20%, #0000 75%, var(--snowflake-color) 0);
+  --g4: repeating-conic-gradient(
+    from 45deg,
+    var(--ornament-color) 0 25%,
+    #fff 0 50%
+  );
+
+  background:
+    var(--g0) 0 calc(var(--s) / -4),
+    var(--g0) var(--s) calc(3 * var(--s) / 4),
+    var(--g1),
+    var(--g1) var(--s) var(--s),
+    var(--g2) 0 calc(var(--s) / 4),
+    var(--g2) var(--s) calc(5 * var(--s) / 4),
+    var(--g3) calc(var(--s) / -10) var(--s),
+    var(--g3) calc(9 * var(--s) / 10) calc(2 * var(--s)),
+    var(--g4) calc(var(--s) / 2) var(--s);
+
+  background-size: calc(2 * var(--s)) calc(2 * var(--s));
+  background-position: center center;
+  background-repeat: repeat;
+}
+
+/* Book Loader */
+.book-loader {
+  --background: linear-gradient(135deg, #23C4F8, #275EFE);
+  --shadow: rgba(39, 94, 254, 0.28);
+  --text: #6C7486;
+  --page: rgba(255, 255, 255, 0.36);
+  --page-fold: rgba(255, 255, 255, 0.52);
+  --duration: 3s;
+  width: 200px;
+  height: 140px;
+  position: relative;
+}
+
+.book-loader:before, .book-loader:after {
+  --r: -6deg;
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  width: 120px;
+  top: 80%;
+  box-shadow: 0 16px 12px var(--shadow);
+  transform: rotate(var(--r));
+}
+
+.book-loader:before {
+  left: 4px;
+}
+
+.book-loader:after {
+  --r: 6deg;
+  right: 4px;
+}
+
+.book-loader div.loader-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 13px;
+  position: relative;
+  z-index: 1;
+  perspective: 600px;
+  box-shadow: 0 4px 6px var(--shadow);
+  background-image: var(--background);
+}
+
+.book-loader div.loader-inner ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.book-loader div.loader-inner ul li {
+  --r: 180deg;
+  --o: 0;
+  --c: var(--page);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  transform-origin: 100% 50%;
+  color: var(--c);
+  opacity: var(--o);
+  transform: rotateY(var(--r));
+  -webkit-animation: var(--duration) ease infinite;
+  animation: var(--duration) ease infinite;
+}
+
+.book-loader div.loader-inner ul li:nth-child(2) {
+  --c: var(--page-fold);
+  -webkit-animation-name: page-2;
+  animation-name: page-2;
+}
+
+.book-loader div.loader-inner ul li:nth-child(3) {
+  --c: var(--page-fold);
+  -webkit-animation-name: page-3;
+  animation-name: page-3;
+}
+
+.book-loader div.loader-inner ul li:nth-child(4) {
+  --c: var(--page-fold);
+  -webkit-animation-name: page-4;
+  animation-name: page-4;
+}
+
+.book-loader div.loader-inner ul li:nth-child(5) {
+  --c: var(--page-fold);
+  -webkit-animation-name: page-5;
+  animation-name: page-5;
+}
+
+.book-loader div.loader-inner ul li svg {
+  width: 90px;
+  height: 120px;
+  display: block;
+}
+
+.book-loader div.loader-inner ul li:first-child {
+  --r: 0deg;
+  --o: 1;
+}
+
+.book-loader div.loader-inner ul li:last-child {
+  --o: 1;
+}
+
+.book-loader span {
+  display: block;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin-top: 20px;
+  text-align: center;
+  color: var(--text);
+}
+
+@keyframes page-2 {
+  0% { transform: rotateY(180deg); opacity: 0; }
+  20% { opacity: 1; }
+  35%, 100% { opacity: 0; }
+  50%, 100% { transform: rotateY(0deg); }
+}
+
+@keyframes page-3 {
+  15% { transform: rotateY(180deg); opacity: 0; }
+  35% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+  65%, 100% { transform: rotateY(0deg); }
+}
+
+@keyframes page-4 {
+  30% { transform: rotateY(180deg); opacity: 0; }
+  50% { opacity: 1; }
+  65%, 100% { opacity: 0; }
+  80%, 100% { transform: rotateY(0deg); }
+}
+
+@keyframes page-5 {
+  45% { transform: rotateY(180deg); opacity: 0; }
+  65% { opacity: 1; }
+  80%, 100% { opacity: 0; }
+  95%, 100% { transform: rotateY(0deg); }
+}

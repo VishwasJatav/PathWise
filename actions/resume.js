@@ -148,3 +148,73 @@ export async function getAtsScore({ content, jobDescription }) {
     return { error: "AI response parsing failed. Please try again later." };
   }
 }
+
+export async function generateFullResumeWithAI(currentData) {
+  const { userId } = await auth();
+  if (!userId) return { error: "Unauthorized" };
+
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+    include: {
+      industryInsight: true,
+    },
+  });
+
+  if (!user) return { error: "User not found" };
+
+  const prompt = `
+    You are an expert ATS-optimized resume writer and career coach.
+    Take the following partially filled or existing resume data for a professional in the ${user.industry} industry, and write a complete, highly professional, ATS-optimized resume.
+    
+    Current Data:
+    ${JSON.stringify(currentData, null, 2)}
+    
+    If the current data is empty, invent a highly professional generic profile for a ${user.industry} professional.
+    Flesh out the summary to be impactful, enhance the experience bullet points with metrics, and refine the skills section.
+    
+    Output strictly valid JSON matching exactly this schema:
+    {
+      "contactInfo": {
+        "email": "string",
+        "mobile": "string",
+        "linkedin": "string",
+        "twitter": "string"
+      },
+      "summary": "string",
+      "skills": "comma separated string",
+      "experience": [
+        {
+          "title": "string",
+          "company": "string",
+          "startDate": "string",
+          "endDate": "string",
+          "description": "string"
+        }
+      ],
+      "education": [
+        {
+          "degree": "string",
+          "school": "string",
+          "startDate": "string",
+          "endDate": "string",
+          "description": "string"
+        }
+      ],
+      "projects": [
+        {
+          "title": "string",
+          "description": "string",
+          "link": "string"
+        }
+      ]
+    }
+  `;
+
+  try {
+    const aiResume = await generateAIJSON(prompt, { userId: user.id, feature: "resume-generate-full" });
+    return { success: true, data: aiResume };
+  } catch (error) {
+    console.error("Failed to generate full AI resume:", error);
+    return { error: "Failed to generate resume with AI." };
+  }
+}

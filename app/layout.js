@@ -66,7 +66,9 @@ export default function RootLayout({ children }) {
               <main className="min-h-screen">{children}</main>
               <Toaster richColors />
               {/*footer*/}
-              <footer className="bg-gray-950 text-gray-400 py-6 mt-10 border-t border-gray-800">
+              <footer className="relative z-0 text-gray-400 py-6 mt-10 border-t border-gray-800 overflow-hidden">
+                <div className="absolute inset-0 z-[-2] bg-[#0A0A0F]" />
+                <div className="absolute inset-0 z-[-1] opacity-[0.06] pointer-events-none insights-pattern-bg-container" />
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                   {/* Text */}
                   <p className="text-sm text-center md:text-left mb-4 md:mb-0">
@@ -74,7 +76,7 @@ export default function RootLayout({ children }) {
                   </p>
 
                   {/* Social Icons */}
-                  <div className="flex gap-x-">
+                  <div className="flex gap-x-4">
                     <a
                       href="https://facebook.com"
                       target="_blank"
@@ -82,7 +84,7 @@ export default function RootLayout({ children }) {
                       className="hover:text-blue-500 transition-colors"
                       aria-label="Visit Rixora on Facebook"
                     >
-                      <Facebook className="size-" />
+                      <Facebook className="size-5" />
                     </a>
                     <a
                       href="https://twitter.com"
@@ -91,7 +93,7 @@ export default function RootLayout({ children }) {
                       className="hover:text-sky-400 transition-colors"
                       aria-label="Visit Rixora on Twitter"
                     >
-                      <Twitter className="size-" />
+                      <Twitter className="size-5" />
                     </a>
                     <a
                       href="https://instagram.com"
@@ -100,7 +102,7 @@ export default function RootLayout({ children }) {
                       className="hover:text-pink-500 transition-colors"
                       aria-label="Visit Rixora on Instagram"
                     >
-                      <Instagram className="size-" />
+                      <Instagram className="size-5" />
                     </a>
                     <a
                       href="https://linkedin.com"
@@ -109,7 +111,7 @@ export default function RootLayout({ children }) {
                       className="hover:text-blue-700 transition-colors"
                       aria-label="Visit Rixora on LinkedIn"
                     >
-                      <Linkedin className="size-" />
+                      <Linkedin className="size-5" />
                     </a>
                   </div>
                 </div>

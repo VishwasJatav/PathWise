@@ -24,90 +24,56 @@ export function TemplatePicker({ onUseTemplate }) {
     return tpl.category.includes(activeCategory);
   });
 
-  const sidebarNavItems = [
-    { label: 'Dashboard', icon: <LayoutDashboard size={15} />, active: false },
-    { label: 'AI Resume Builder', icon: <FileText size={15} />, active: true },
-    { label: 'AI Cover Letter', icon: <PenBox size={15} />, active: false },
-    { label: 'AI Job Tracker', icon: <Briefcase size={15} />, active: false },
-    { label: 'AI Interview Prep', icon: <GraduationCap size={15} />, active: false },
-    { label: 'AI Career Coach', icon: <MessageSquare size={15} />, active: false },
-    { label: 'Skill Assessment', icon: <CheckSquare size={15} />, active: false },
-    { label: 'Learning Hub', icon: <BookOpen size={15} />, active: false },
-    { label: 'Salary Insights', icon: <DollarSign size={15} />, active: false },
-    { label: 'Job Matcher', icon: <Search size={15} />, active: false },
-    { label: 'Career Roadmap', icon: <Compass size={15} />, active: false },
-  ];
+  const [isImporting, setIsImporting] = useState(false);
+  const fileInputRef = React.useRef(null);
+
+  const handleCreateNew = () => {
+    onUseTemplate(selectedTemplate, true); // Pass true to indicate 'clear/fresh start'
+  };
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsImporting(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Using dynamic import to avoid module issues if imported at top level
+      const { importResumeFromPDF } = await import("@/actions/resume-import");
+      const { toast } = await import("sonner");
+      
+      toast.loading("Analyzing and extracting your resume...", { id: "import" });
+      const result = await importResumeFromPDF(formData);
+      
+      if (result?.error) {
+        toast.error(result.error, { id: "import" });
+      } else if (result?.data) {
+        toast.success("Resume imported successfully!", { id: "import" });
+        onUseTemplate(selectedTemplate, false, result.data);
+      }
+    } catch (error) {
+      console.error(error);
+      const { toast } = await import("sonner");
+      toast.error("Failed to import resume", { id: "import" });
+    } finally {
+      setIsImporting(false);
+      // reset file input
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
 
   return (
     <div 
       data-testid="template-picker"
       className="flex-1 flex overflow-hidden bg-[#0A0A0F] text-[#F0F0FF] h-full"
     >
-      {/* 1. Sidebar Nav (Left) */}
-      <aside className="w-[200px] border-r border-slate-800 bg-[#0C0C18] flex flex-col justify-between shrink-0 hidden lg:flex">
-        {/* Navigation Area */}
-        <div className="flex flex-col gap-4 py-4 overflow-y-auto scrollbar-hide">
-          <div className="text-[10px] font-black uppercase tracking-widest text-[#4A4A6A] px-5">
-            Core Modules
-          </div>
-          
-          <nav className="flex flex-col gap-0.5 px-3">
-            {sidebarNavItems.map((item) => (
-              <div
-                key={item.label}
-                className={cn(
-                  'flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-150 text-[11.5px] font-semibold',
-                  item.active
-                    ? 'bg-[#1E1030] text-[#A78BFA] border-l-2 border-[#6C47FF] rounded-l-none'
-                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
-                )}
-              >
-                <div className={cn('shrink-0', item.active ? 'text-[#A78BFA]' : 'text-slate-500')}>
-                  {item.icon}
-                </div>
-                <span>{item.label}</span>
-              </div>
-            ))}
-          </nav>
-        </div>
-
-        {/* Upgrade Box & Pinned Profile */}
-        <div className="p-3 border-t border-slate-800 flex flex-col gap-3">
-          {/* Upgrade Box */}
-          <div className="bg-[#1A1030] border border-[#3A1A6E] rounded-xl p-3 flex flex-col gap-2">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#A78BFA]">
-              <Crown size={12} className="text-amber-400" />
-              <span>Upgrade to Pro</span>
-            </div>
-            <ul className="flex flex-col gap-1 text-[9.5px] text-slate-400">
-              <li className="flex items-center gap-1">
-                <CheckCircle size={8} className="text-[#6C47FF]" /> Unlimited generations
-              </li>
-              <li className="flex items-center gap-1">
-                <CheckCircle size={8} className="text-[#6C47FF]" /> ATS advanced analysis
-              </li>
-            </ul>
-            <button type="button" className="w-full bg-[#6C47FF] hover:bg-[#7C57FF] text-white font-bold text-[10.5px] py-1.5 rounded-lg transition-colors mt-1">
-              Upgrade Now
-            </button>
-          </div>
-
-          {/* User profile row */}
-          <div className="flex items-center gap-2.5 px-2 py-1.5 border-t border-slate-800/60 mt-1">
-            <Image
-              src={user?.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop'}
-              alt={user?.fullName || 'User Profile'}
-              width={40}
-              height={40}
-              className="size- rounded-full object-cover ring-1 ring-[#6C47FF]/50"
-            />
-            <div className="flex flex-col leading-none min-w-0">
-              <span className="text-[11px] font-bold text-[#C0C0E0] truncate">{user?.fullName || 'Vishwas Mudagal'}</span>
-              <span className="text-[8.5px] text-[#4A4A6A] font-semibold uppercase tracking-wider mt-0.5">Free Plan</span>
-            </div>
-          </div>
-        </div>
-      </aside>
 
       {/* 2. Main Content (Center) */}
       <main className="flex-1 flex flex-col overflow-y-auto p-6 md:p-8 scrollbar-hide bg-[#0A0A0F]">
@@ -125,11 +91,27 @@ export function TemplatePicker({ onUseTemplate }) {
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <button type="button" className="h-9 px-4 bg-transparent hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-bold text-slate-300 transition-colors flex items-center gap-1.5">
-                <Upload size={13} />
-                Import Resume
+              <input 
+                type="file" 
+                accept="application/pdf" 
+                className="hidden" 
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
+              <button 
+                type="button" 
+                onClick={handleImportClick}
+                disabled={isImporting}
+                className="h-9 px-4 bg-transparent hover:bg-slate-800 border border-slate-800 rounded-lg text-xs font-bold text-slate-300 transition-colors flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {isImporting ? <Sparkles size={13} className="animate-spin" /> : <Upload size={13} />}
+                {isImporting ? "Importing..." : "Import Resume"}
               </button>
-              <button type="button" className="h-9 px-4 bg-[#6C47FF] hover:bg-[#7C57FF] rounded-lg text-xs font-bold text-white transition-colors flex items-center gap-1.5 shadow-lg shadow-purple-900/10">
+              <button 
+                type="button" 
+                onClick={handleCreateNew}
+                className="h-9 px-4 bg-[#6C47FF] hover:bg-[#7C57FF] rounded-lg text-xs font-bold text-white transition-colors flex items-center gap-1.5 shadow-lg shadow-purple-900/10"
+              >
                 <Plus size={13} />
                 Create New Resume
               </button>

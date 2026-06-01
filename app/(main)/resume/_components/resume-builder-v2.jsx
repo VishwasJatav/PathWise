@@ -39,7 +39,8 @@ const BuilderShell = () => {
         zoom,
         setZoom,
         lastSavedAt,
-        setLastSavedAt
+        setLastSavedAt,
+        reset
     } = useResume();
     const [isGenerating, setIsGenerating] = React.useState(false);
     const [mode, setMode] = React.useState("pick"); // "pick" | "edit"
@@ -109,11 +110,24 @@ const BuilderShell = () => {
         return `Auto-saved ${Math.floor(diff / 60)}m ago`;
     };
 
-    const handleUseTemplate = (selectedTpl) => {
+    const handleUseTemplate = (selectedTpl, isNew = false, importedData = null) => {
         let editorTemplateId = "classic";
         if (selectedTpl.id === "zenith") editorTemplateId = "minimal";
         else if (selectedTpl.id === "momentum" || selectedTpl.id === "impact") editorTemplateId = "modern";
         else if (selectedTpl.id === "vertex-pro" || selectedTpl.id === "elite") editorTemplateId = "creative";
+        
+        if (isNew) {
+            reset({
+                contactInfo: {},
+                summary: "",
+                skills: "",
+                experience: [],
+                education: [],
+                projects: [],
+            });
+        } else if (importedData) {
+            reset(importedData);
+        }
         
         setTemplate(editorTemplateId);
         setSelectedPickerTemplate(selectedTpl);
@@ -129,7 +143,7 @@ const BuilderShell = () => {
 
     // Mode 2: Resume Editor
     return (
-        <div data-testid="resume-editor" className="flex flex-col h-full bg-[#0a0a0c] text-slate-200 overflow-hidden">
+        <div data-testid="resume-editor" className="flex flex-col h-full bg-[#0A0A0F] text-slate-200 overflow-hidden">
             {/* Focused Editor Toolbar */}
             <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-[#0F0F1A] backdrop-blur-md shrink-0">
                 <div className="px-6 flex h-14 items-center justify-between">
@@ -196,7 +210,7 @@ const BuilderShell = () => {
                             className="h-9 bg-[#6C47FF] hover:bg-[#7C57FF] text-white border-none shadow-lg shadow-purple-900/20 px-4 font-bold text-xs uppercase tracking-widest transition-all"
                         >
                             {isGenerating ? (
-                                <Button type="button"Loader className="mr-2" />
+                                <ButtonLoader className="mr-2" />
                             ) : (
                                 <Download className="h-3.5 w-3.5 mr-2" />
                             )}
@@ -233,12 +247,12 @@ const BuilderShell = () => {
             </div>
 
             {/* Main Content Split */}
-            <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-black">
+            <main className="flex-1 flex flex-col md:flex-row overflow-hidden bg-[#0A0A0F]">
                 {/* Left Panel: Editor (45%) */}
                 <div 
                     data-testid="editor-panel"
                     className={cn(
-                        "w-full md:w-[45%] h-full overflow-y-auto p-6 md:p-12 border-r border-slate-800 bg-neutral-950 scrollbar-hide",
+                        "w-full md:w-[45%] h-full overflow-y-auto p-6 md:p-12 border-r border-slate-800 bg-[#0A0A0F] scrollbar-hide",
                         activeTab !== "edit" && "hidden md:block"
                     )}
                 >
@@ -257,7 +271,7 @@ const BuilderShell = () => {
                 <div 
                     data-testid="live-preview"
                     className={cn(
-                        "w-full md:w-[55%] h-full flex flex-col bg-neutral-900 relative overflow-hidden",
+                        "w-full md:w-[55%] h-full flex flex-col bg-[#0A0A0F] relative overflow-hidden",
                         activeTab !== "preview" && "hidden md:flex"
                     )}
                 >
@@ -328,7 +342,7 @@ const BuilderShell = () => {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <Button type="button" size="sm" variant="outline" onClick={generatePDF} disabled={isGenerating} className="border-slate-800 bg-slate-900">
-                                                {isGenerating ? <Button type="button"Loader className="mr-1.5" /> : <Download className="size- mr-1" />}
+                                                {isGenerating ? <ButtonLoader className="mr-1.5" /> : <Download className="size- mr-1" />}
                                                 {isGenerating ? "Exporting" : "Download"}
                                             </Button>
                                             <DialogClose asChild>
@@ -336,7 +350,7 @@ const BuilderShell = () => {
                                             </DialogClose>
                                         </div>
                                     </div>
-                                    <div className="flex-1 overflow-y-auto bg-[#121216] p-8 flex justify-center">
+                                    <div className="flex-1 overflow-y-auto bg-[#0A0A0F] p-8 flex justify-center">
                                         <ResumePreview isModal={true} />
                                     </div>
                                 </DialogContent>
